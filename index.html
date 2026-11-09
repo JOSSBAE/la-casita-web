@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Casita - Abarrotes, Gaming y Snacks</title>
+  <style>
+    /* ================= ESTILOS GLOBALES ================= */
+    body { margin: 0; padding: 0; background: #100b16; font-family: Arial, Helvetica, sans-serif; }
+    #casita-inicio{background:#100b16;color:#f8f4ff;margin:0;padding:0;overflow-x:hidden;}
+    #casita-inicio *{box-sizing:border-box}
+    #casita-inicio a{color:inherit;text-decoration:none}
+    
+    /* ================= HEADER ================= */
+    #casita-inicio .cas-header{background:#171020;border-bottom:1px solid #6e2b91;padding:18px max(18px,calc((100% - 1160px)/2));display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;position:relative;z-index:100}
+    #casita-inicio .cas-logo{font-weight:900;font-size:26px;letter-spacing:1px;color:#fff}
+    #casita-inicio .cas-logo span{color:#ff4eaa}
+    #casita-inicio .cas-tag{display:block;font-size:11px;font-weight:500;letter-spacing:2px;color:#c8afd9;margin-top:4px}
+    #casita-inicio .cas-nav{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;align-items:center}
+    #casita-inicio .cas-nav a:hover{color:#ff4eaa}
+    #casita-inicio .cas-wrap{max-width:1160px;margin:34px auto;padding:0 18px}
+    #casita-inicio .cas-title{font-size:26px;margin:0 0 8px;color:#fff}
+    #casita-inicio .cas-subtitle{color:#bda9ca;margin:0 0 20px}
+    #casita-inicio .cas-btn{display:inline-block;background:linear-gradient(90deg,#a52cff,#ff4eaa);color:white!important;padding:13px 20px;border-radius:9px;font-weight:800;margin-top:10px;box-shadow:0 0 20px #a52cff45;border:0;cursor:pointer;font-family:inherit;font-size:14px;transition:0.2s;}
+    #casita-inicio .cas-btn:hover{filter:brightness(1.1)}
+
+    /* ================= CARRUSEL HERO ================= */
+    #casita-inicio .cas-hero-carousel{position:relative;width:100%;height:100vh;overflow:hidden;background:#000;display:flex;align-items:center}
+    #casita-inicio .cas-slide{position:absolute;inset:0;opacity:0;transition:opacity 0.8s ease-in-out;visibility:hidden;display:flex;align-items:center}
+    #casita-inicio .cas-slide.active{opacity:1;visibility:visible;z-index:1}
+    #casita-inicio .cas-slide-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+    #casita-inicio .cas-slide-overlay{position:absolute;inset:0;background:linear-gradient(90deg, rgba(16,11,22,0.95) 0%, rgba(16,11,22,0.7) 40%, transparent 100%);z-index:1}
+    #casita-inicio .cas-slide-content{position:relative;z-index:2;max-width:1160px;width:100%;margin:0 auto;padding:80px 24px 0;display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+    #casita-inicio .cas-kicker{background:#a52cff22;border:1px solid #a52cff66;color:#ff72bd;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:800;padding:6px 14px;border-radius:20px;backdrop-filter:blur(4px)}
+    #casita-inicio .cas-slide-content h1{font-size:clamp(38px,5vw,64px);line-height:1.05;margin:0;color:#fff;font-weight:900;max-width:700px;text-shadow:0 4px 20px rgba(0,0,0,0.5)}
+    #casita-inicio .cas-slide-content p{font-size:clamp(15px,2vw,18px);line-height:1.6;color:#ddcde8;max-width:550px;margin:0}
+    #casita-inicio .cas-slide-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+    #casita-inicio .cas-btn-solid{background:#2563eb;color:#fff!important;padding:14px 24px;border-radius:8px;font-weight:700;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 14px rgba(37,99,235,0.4);transition:.2s;border:0;cursor:pointer;font-family:inherit;font-size:15px}
+    #casita-inicio .cas-btn-solid:hover{background:#1d4ed8;transform:translateY(-2px)}
+    #casita-inicio .cas-btn-outline{background:rgba(255,255,255,0.1);color:#fff!important;padding:14px 24px;border-radius:8px;font-weight:700;border:1px solid rgba(255,255,255,0.2);display:inline-flex;align-items:center;gap:8px;backdrop-filter:blur(4px);transition:.2s;cursor:pointer;font-family:inherit;font-size:15px}
+    #casita-inicio .cas-btn-outline:hover{background:rgba(255,255,255,0.2);transform:translateY(-2px)}
+    
+    #casita-inicio .cas-carousel-footer{position:absolute;bottom:0;left:0;right:0;z-index:3;padding:30px 24px;display:flex;justify-content:space-between;align-items:flex-end;max-width:1160px;margin:0 auto;width:100%}
+    #casita-inicio .cas-stats{display:flex;gap:40px}
+    #casita-inicio .cas-stat{display:flex;flex-direction:column}
+    #casita-inicio .cas-stat strong{font-size:24px;color:#fff;font-weight:900}
+    #casita-inicio .cas-stat span{font-size:12px;color:#bda9ca;text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+    #casita-inicio .cas-carousel-dots{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+    #casita-inicio .cas-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.3);border:0;cursor:pointer;transition:.3s;padding:0}
+    #casita-inicio .cas-dot.active{background:#fff;width:32px;border-radius:10px}
+
+    /* ================= CATEGORÍAS Y PRODUCTOS ================= */
+    #casita-inicio .cas-cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    #casita-inicio .cas-cat{background:#1b1225;border:1px solid #392047;border-radius:14px;padding:22px 12px;text-align:center;transition:.2s}
+    #casita-inicio .cas-cat:hover{border-color:#e34cff;transform:translateY(-3px);box-shadow:0 0 20px #a52cff24}
+    #casita-inicio .cas-cat .emoji{font-size:37px;display:block;margin-bottom:10px}
+    #casita-inicio .cas-cat strong{font-size:15px}
+    
+    #casita-inicio .cas-products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+    #casita-inicio .cas-product{background:#1b1225;border:1px solid #392047;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s, border-color .2s, box-shadow .2s}
+    #casita-inicio .cas-product:hover{border-color:#a52cff;box-shadow:0 8px 30px #a52cff28;transform:translateY(-2px)}
+    #casita-inicio .cas-product .cas-prod-art{position:relative;height:150px;background:linear-gradient(135deg,#271235,#171020);display:grid;place-items:center;overflow:hidden}
+    #casita-inicio .cas-product .cas-prod-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:transparent;padding:15px;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));}
+    #casita-inicio .cas-product .cas-prod-info{padding:18px;display:flex;flex-direction:column;flex:1;gap:8px}
+    #casita-inicio .cas-product h3{font-size:15px;line-height:1.3;margin:0;color:#fff;font-weight:700}
+    #casita-inicio .cas-price{color:#ff72bd;font-weight:900;font-size:22px;letter-spacing:-.5px}
+    #casita-inicio .cas-product .cas-small{color:#8a6f9c;font-size:11px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;margin:0}
+    
+    #casita-inicio .cas-add{margin-top:6px;width:100%;border:0;cursor:pointer;background:linear-gradient(90deg,#a52cff,#ff4eaa);color:#fff;font-weight:800;font-size:13px;padding:12px;border-radius:10px;font-family:inherit;transition:.2s;box-shadow:0 0 14px #a52cff33}
+    #casita-inicio .cas-add:hover{filter:brightness(1.12);box-shadow:0 0 20px #a52cff55}
+    #casita-inicio .cas-add.is-added{background:#25d366;box-shadow:0 0 14px #25d36645}
+    
+    #casita-inicio .cas-card-qty{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:12px;border-top:1px solid #2a1a38}
+    #casita-inicio .cas-card-qty-group{display:inline-flex;align-items:center;gap:2px;background:#241531;border:1px solid #4a2a5e;border-radius:9px;padding:2px}
+    #casita-inicio .cas-card-qty-group button{width:28px;height:28px;border:0;background:transparent;color:#ff72bd;font-size:16px;font-weight:900;cursor:pointer;line-height:1;border-radius:7px;font-family:inherit;transition:.15s}
+    #casita-inicio .cas-card-qty-group button:hover:not(:disabled){background:#3a1f4d;color:#fff}
+    #casita-inicio .cas-card-qty-group button:disabled{opacity:.3;cursor:not-allowed}
+    #casita-inicio .cas-card-count{min-width:26px;text-align:center;font-size:13px;font-weight:800;color:#fff}
+    #casita-inicio .cas-card-gocart{border:0;background:transparent;color:#ff72bd;font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;padding:6px 8px;border-radius:7px;transition:.15s;white-space:nowrap;letter-spacing:.3px}
+    #casita-inicio .cas-card-gocart:hover{color:#fff;background:#3a1f4d}
+
+    /* ================= BUSCADOR Y CHIPS ================= */
+    #casita-inicio .cas-search{display:flex;max-width:460px;margin:0 0 22px;background:#21152c;border:1px solid #5c3470;border-radius:10px;overflow:hidden}
+    #casita-inicio .cas-search input{width:100%;min-width:0;padding:13px 14px;background:transparent;color:#fff;border:0;outline:0;font-family:inherit}
+    #casita-inicio .cas-search button{border:0;background:#7628a4;color:#fff;padding:0 16px;cursor:pointer;font-family:inherit;font-weight:700}
+    #casita-inicio .cas-view{display:none}
+    #casita-inicio .cas-view.active{display:block}
+    #casita-inicio .cas-cat-section{margin:0 0 34px}
+    #casita-inicio .cas-cat-section h2{font-size:22px;color:#fff;margin:0 0 18px;display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid #392047}
+    #casita-inicio .cas-cat-section h2 .cas-cat-emoji{font-size:26px}
+    #casita-inicio .cas-cat-section h2 small{color:#bda9ca;font-size:12px;font-weight:400}
+    
+    #casita-inicio .cas-filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 28px;padding-bottom:18px;border-bottom:1px solid #2a1a38}
+    #casita-inicio .cas-chip{background:#1b1225;border:1px solid #392047;color:#ddcde8;padding:9px 16px;border-radius:22px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;white-space:nowrap;font-family:inherit}
+    #casita-inicio .cas-chip:hover{border-color:#a52cff;color:#fff;transform:translateY(-1px)}
+    #casita-inicio .cas-chip.active{background:linear-gradient(90deg,#a52cff,#ff4eaa);border-color:transparent;color:#fff;box-shadow:0 0 14px #a52cff55}
+    #casita-inicio .cas-no-results{grid-column:1 / -1;text-align:center;padding:70px 20px;color:#bda9ca}
+
+    /* ================= CARRITO ================= */
+    #casita-inicio .cas-cart-fab{position:fixed;right:20px;bottom:90px;z-index:9997;width:58px;height:58px;border:0;border-radius:50%;background:linear-gradient(135deg,#a52cff,#ff4eaa);color:#fff;font-size:23px;cursor:pointer;display:grid;place-items:center;box-shadow:0 5px 22px #a52cff66;transition:.2s;font-family:inherit}
+    #casita-inicio .cas-cart-fab:hover{transform:translateY(-2px);filter:brightness(1.1)}
+    #casita-inicio .cas-cart-count{position:absolute;top:-4px;right:-4px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:#ff4eaa;color:#fff;font-size:12px;font-weight:900;display:grid;place-items:center;border:2px solid #100b16}
+    #casita-inicio .cas-cart-count.hide{display:none}
+    #casita-inicio .cas-cart-overlay{position:fixed;inset:0;background:#0009;opacity:0;visibility:hidden;transition:.25s;z-index:9998}
+    #casita-inicio .cas-cart-overlay.open{opacity:1;visibility:visible}
+    #casita-inicio .cas-cart{position:fixed;top:0;right:0;height:100%;width:min(400px,100%);background:#171020;border-left:1px solid #6e2b91;z-index:9999;display:flex;flex-direction:column;transform:translateX(102%);transition:transform .3s ease;box-shadow:-14px 0 44px #000a}
+    #casita-inicio .cas-cart.open{transform:translateX(0)}
+    #casita-inicio .cas-cart-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px;border-bottom:1px solid #392047;background:#1b1225}
+    #casita-inicio .cas-cart-head h3{margin:0;font-size:17px;color:#fff}
+    #casita-inicio .cas-cart-head h3 span{color:#ff72bd;font-size:14px}
+    #casita-inicio .cas-cart-close{border:0;background:#2a1a38;color:#f8f4ff;width:34px;height:34px;border-radius:9px;font-size:16px;cursor:pointer;line-height:1}
+    #casita-inicio .cas-cart-close:hover{background:#3d2452;color:#ff72bd}
+    #casita-inicio .cas-cart-body{flex:1;overflow-y:auto;padding:6px 18px}
+    #casita-inicio .cas-cart-item{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid #2a1a38}
+    #casita-inicio .cas-cart-thumb{position:relative;width:56px;height:56px;border-radius:10px;background:#271235;display:grid;place-items:center;font-size:26px;overflow:hidden}
+    #casita-inicio .cas-cart-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:transparent;padding:4px;}
+    #casita-inicio .cas-cart-info{display:flex;flex-direction:column;gap:5px;min-width:0}
+    #casita-inicio .cas-cart-info strong{font-size:13px;color:#fff;font-weight:700;line-height:1.3}
+    #casita-inicio .cas-cart-unit{font-size:11px;color:#bda9ca}
+    #casita-inicio .cas-qty{display:inline-flex;align-items:center;gap:2px;background:#241531;border:1px solid #4a2a5e;border-radius:8px;padding:2px;width:max-content}
+    #casita-inicio .cas-qty button{width:24px;height:24px;border:0;background:transparent;color:#ff72bd;font-size:15px;font-weight:900;cursor:pointer;line-height:1;border-radius:6px;font-family:inherit}
+    #casita-inicio .cas-qty button:hover{background:#3a1f4d}
+    #casita-inicio .cas-qty span{min-width:22px;text-align:center;font-size:13px;font-weight:700;color:#fff}
+    #casita-inicio .cas-cart-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+    #casita-inicio .cas-line-total{font-size:14px;font-weight:900;color:#ff72bd}
+    #casita-inicio .cas-remove{border:0;background:transparent;color:#8a6f9c;cursor:pointer;font-size:14px;padding:2px 4px;border-radius:6px;line-height:1}
+    #casita-inicio .cas-remove:hover{color:#ff4eaa;background:#2a1a38}
+    #casita-inicio .cas-cart-empty{text-align:center;padding:70px 10px;color:#bda9ca}
+    #casita-inicio .cas-cart-empty span{font-size:52px;display:block;margin-bottom:12px;opacity:.7}
+    #casita-inicio .cas-cart-empty p{margin:0 0 6px;color:#fff;font-size:16px;font-weight:700}
+    #casita-inicio .cas-cart-empty small{font-size:12px}
+    #casita-inicio .cas-cart-foot{padding:18px;border-top:1px solid #392047;background:#1b1225}
+    #casita-inicio .cas-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:15px;color:#ddcde8}
+    #casita-inicio .cas-total-row strong{font-size:24px;color:#fff;font-weight:900}
+    #casita-inicio .cas-btn-full{display:block;width:100%;text-align:center;margin-top:0}
+    #casita-inicio .cas-btn-full.is-off{opacity:.45;pointer-events:none;filter:grayscale(.4)}
+    #casita-inicio .cas-clear{display:block;width:100%;margin-top:10px;background:transparent;border:0;color:#bda9ca;font-size:12px;cursor:pointer;text-decoration:underline;font-family:inherit}
+    #casita-inicio .cas-clear:hover{color:#ff4eaa}
+    #casita-inicio .cas-toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:#2a1a38;border:1px solid #a52cff;color:#fff;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:700;z-index:10000;opacity:0;pointer-events:none;transition:.25s;box-shadow:0 8px 26px #000a}
+    #casita-inicio .cas-toast.show{opacity:1;transform:translate(-50%,0)}
+
+    /* ================= BOTÓN WHATSAPP FLOTANTE ================= */
+    #casita-inicio .cas-wa{position:fixed;right:20px;bottom:20px;z-index:9997;width:58px;height:58px;display:grid;place-items:center;border-radius:50%;background:#25d366;color:white!important;font-size:27px;box-shadow:0 5px 22px #0008}
+
+    /* ================= GALERÍA GAMING ================= */
+    .cas-gaming-gallery { max-width: 1160px; margin: 50px auto; padding: 0 18px; font-family: Arial, Helvetica, sans-serif; scroll-margin-top: 20px; }
+    .cas-gaming-gallery .gal-title { font-size: 26px; color: #fff; margin: 0 0 8px; text-align: center; }
+    .cas-gaming-gallery .gal-subtitle { color: #bda9ca; margin: 0 0 30px; text-align: center; font-size: 16px; }
+    .cas-gaming-gallery .gal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .cas-gaming-gallery .gal-item { position: relative; border-radius: 16px; overflow: hidden; border: 2px solid #392047; background: #1b1225; cursor: pointer; transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; aspect-ratio: 4/3; }
+    .cas-gaming-gallery .gal-item:hover { transform: translateY(-5px); border-color: #a52cff; box-shadow: 0 10px 25px rgba(165, 44, 255, 0.3); }
+    .cas-gaming-gallery .gal-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .cas-gaming-gallery .gal-item:hover img { transform: scale(1.08); }
+    .cas-gaming-gallery .gal-overlay { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(16, 11, 22, 0.9) 0%, transparent 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+    .cas-gaming-gallery .gal-item:hover .gal-overlay { opacity: 1; }
+    .cas-gaming-gallery .gal-overlay h3 { color: #ff4eaa; margin: 0 0 5px; font-size: 20px; }
+    .cas-gaming-gallery .gal-overlay p { color: #fff; margin: 0; font-size: 14px; }
+
+    /* ================= BLOQUE FINAL ================= */
+    .cas-bloque-final { font-family: Arial, Helvetica, sans-serif; max-width: 1160px; margin: 50px auto 20px; padding: 0 18px; }
+    .cas-bloque-final .cta-box { background: linear-gradient(115deg, #321345, #1b1024); border: 1px solid #7836a0; border-radius: 16px; padding: 40px 30px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; text-align: left; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .cas-bloque-final .cta-text h2 { font-size: 28px; color: #fff; margin: 0 0 10px; }
+    .cas-bloque-final .cta-text p { color: #bda9ca; font-size: 16px; margin: 0; line-height: 1.5; }
+    .cas-bloque-final .btn-wa { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(90deg, #a52cff, #ff4eaa); color: #fff !important; text-decoration: none; padding: 15px 30px; border-radius: 9px; font-weight: 800; font-size: 16px; box-shadow: 0 0 20px rgba(165, 44, 255, 0.4); transition: transform 0.2s, filter 0.2s; white-space: nowrap; }
+    .cas-bloque-final .btn-wa:hover { filter: brightness(1.15); transform: translateY(-2px); }
+    .cas-bloque-final .footer-text { text-align: center; color: #bda9ca; font-size: 14px; line-height: 1.8; border-top: 1px solid #2a1a38; padding-top: 30px; }
+    .cas-bloque-final .footer-text strong { color: #fff; font-size: 16px; letter-spacing: 1px; }
+
+    /* ================= MEDIA QUERIES ================= */
+    @media(max-width:900px){ #casita-inicio .cas-stats{gap:20px} #casita-inicio .cas-stat strong{font-size:20px} }
+    @media(max-width:760px){
+      #casita-inicio .cas-header{align-items:flex-start} #casita-inicio .cas-nav{gap:12px}
+      #casita-inicio .cas-hero-carousel{height:100vh;min-height: 600px;} #casita-inicio .cas-slide-overlay{background:linear-gradient(0deg, rgba(16,11,22,0.95) 0%, rgba(16,11,22,0.7) 100%)}
+      #casita-inicio .cas-slide-content{padding-top: 60px;} #casita-inicio .cas-carousel-footer{position:absolute; padding:20px 24px; flex-direction:column; align-items:flex-start; gap:24px}
+      #casita-inicio .cas-stats{flex-wrap:wrap;gap:16px;width:100%;justify-content:space-between}
+      #casita-inicio .cas-cats{grid-template-columns:repeat(2,minmax(0,1fr))} #casita-inicio .cas-products{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+      #casita-inicio .cas-title{font-size:23px} #casita-inicio .cas-cat-section h2{font-size:19px} #casita-inicio .cas-product .cas-prod-art{height:120px}
+      .cas-bloque-final .cta-box { flex-direction: column; text-align: center; padding: 30px 20px; }
+      .cas-bloque-final .btn-wa { width: 100%; justify-content: center; }
+    }
+    @media(max-width:420px){
+      #casita-inicio .cas-logo{font-size:22px} #casita-inicio .cas-nav{font-size:12px;gap:10px} #casita-inicio .cas-product .cas-prod-art{height:100px}
+      #casita-inicio .cas-cart-fab{width:52px;height:52px;font-size:20px;bottom:88px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= PÁGINA PRINCIPAL ================= -->
+  <div id="casita-inicio">
+    <header class="cas-header">
+      <a href="#/inicio" class="cas-logo">LA <span>CASITA</span><span class="cas-tag">ABARROTES · GAMING · SNACKS</span></a>
+      <nav class="cas-nav" aria-label="Menú principal">
+        <a href="#/inicio">Inicio</a>
+        <a href="#/catalogo">Catálogo</a>
+        <a href="#/catalogo/abarrotes">Abarrotes</a>
+        <a href="#/catalogo/dulces">Dulces</a>
+        <a href="#/catalogo/bebidas">Bebidas</a>
+        <a href="#cas-gaming-gallery">Gaming</a>
+        <a href="#" data-scroll-to="cas-contacto">Contacto</a>
+      </nav>
+    </header>
+
+    <div class="cas-view active" data-view="inicio">
+      <section class="cas-hero-carousel" id="cas-carousel">
+        <div id="cas-carousel-track"></div>
+        <div class="cas-carousel-footer">
+          <div class="cas-stats">
+            <div class="cas-stat"><strong>+200</strong><span>Productos</span></div>
+            <div class="cas-stat"><strong>5★</strong><span>Atención</span></div>
+            <div class="cas-stat"><strong>24/7</strong><span>WhatsApp</span></div>
+          </div>
+          <div class="cas-carousel-dots" id="cas-carousel-dots"></div>
+        </div>
+      </section>
+      <section class="cas-wrap" style="margin-top:50px;">
+        <h2 class="cas-title">Compra por categoría</h2>
+        <p class="cas-subtitle">Encuentra algo para tu despensa o para quitarte el antojo.</p>
+        <div class="cas-cats" id="cas-home-cats"></div>
+      </section>
+    </div>
+
+    <div class="cas-view" data-view="catalogo">
+      <section class="cas-wrap">
+        <h2 class="cas-title" id="cas-cat-title">Catálogo completo</h2>
+        <p class="cas-subtitle">Precios del inventario. Confirma existencias antes de publicar.</p>
+        <form class="cas-search" id="cas-search-form">
+          <input id="cas-search-input" type="search" placeholder="Buscar dulces, bebidas, galletas..." aria-label="Buscar productos">
+          <button type="submit">Buscar</button>
+        </form>
+        <div class="cas-filter-bar" id="cas-filter-bar"></div>
+        <div id="cas-product-grid"></div>
+      </section>
+    </div>
+
+    <!-- BOTONES Y MODALES DEL CARRITO -->
+    <button type="button" class="cas-cart-fab" id="cas-cart-fab" aria-label="Ver mi carrito">
+      🛒<span class="cas-cart-count hide" id="cas-cart-count">0</span>
+    </button>
+    <div class="cas-cart-overlay" id="cas-cart-overlay"></div>
+    <aside class="cas-cart" id="cas-cart" aria-hidden="true">
+      <div class="cas-cart-head">
+        <h3>Tu carrito <span id="cas-cart-head-count"></span></h3>
+        <button type="button" class="cas-cart-close" id="cas-cart-close">✕</button>
+      </div>
+      <div class="cas-cart-body" id="cas-cart-body"></div>
+      <div class="cas-cart-foot">
+        <div class="cas-total-row"><span>Total</span><strong id="cas-cart-total">$0</strong></div>
+        <a class="cas-btn cas-btn-full is-off" id="cas-checkout" href="#" target="_blank" rel="noopener">Pedir por WhatsApp</a>
+        <button type="button" class="cas-clear" id="cas-cart-clear">Vaciar carrito</button>
+      </div>
+    </aside>
+    <a class="cas-wa" href="https://wa.me/529831121228?text=Hola%20La%20Casita%2C%20quiero%20hacer%20un%20pedido" target="_blank" rel="noopener">✆</a>
+  </div>
+
+  <!-- ================= GALERÍA DE MAQUINITAS ================= -->
+  <div class="cas-gaming-gallery" id="cas-gaming-gallery">
+    <h2 class="gal-title">🎮 Nuestra Zona Gaming</h2>
+    <p class="gal-subtitle">Ven a retar a tus amigos en nuestras maquinitas. ¡El mejor ambiente te espera!</p>
+    <div class="gal-grid">
+      <div class="gal-item">
+        <img src="img/maquinita-1.png" alt="Maquinita 1" onerror="this.src='https://via.placeholder.com/400x300/1b1225/ff4eaa?text=Falta+maquinita-1'">
+        <div class="gal-overlay"><h3>Zona Xbox</h3><p>Pantallas de alta definición y controles listos.</p></div>
+      </div>
+      <div class="gal-item">
+        <img src="img/maquinita-2.png" alt="Maquinita 2" onerror="this.src='https://via.placeholder.com/400x300/1b1225/ff4eaa?text=Falta+maquinita-2'">
+        <div class="gal-overlay"><h3>Ambiente Gamer</h3><p>Iluminación y comodidad para jugar por horas.</p></div>
+      </div>
+      <div class="gal-item">
+        <img src="img/maquinita-3.png" alt="Maquinita 3" onerror="this.src='https://via.placeholder.com/400x300/1b1225/ff4eaa?text=Falta+maquinita-3'">
+        <div class="gal-overlay"><h3>¡A Jugar!</h3><p>Trae a tus amigos y armen la reta.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= BLOQUE FINAL ================= -->
+  <div class="cas-bloque-final" id="cas-contacto">
+    <div class="cta-box">
+      <div class="cta-text">
+        <h2>¿Se te antojó algo?</h2>
+        <p>Escríbenos para consultar disponibilidad y hacer tu pedido.<br>¡Te atendemos con gusto!</p>
+      </div>
+      <a class="btn-wa" href="https://wa.me/529831121228?text=Hola%20La%20Casita%2C%20quiero%20consultar%20un%20producto" target="_blank" rel="noopener">
+        💬 Pedir por WhatsApp
+      </a>
+    </div>
+    <div class="footer-text">
+      <strong>LA CASITA</strong><br>
+      Abarrotes, Gaming y Snacks<br>
+      Aruba, Bicentenario · 983 112 1228
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    'use strict';
+
+    var WA_NUMBER = '529831121228';
+    var CART_KEY  = 'casita_cart_v1';
+
+    var SLIDES = [
+      { type: 'image', src: 'img/fachada-enfrente.png', kicker: '¡Bienvenido a La Casita!', title: 'Tu lugar para jugar y comer.', desc: 'Abarrotes, dulces, bebidas, botanas y snacks preparados para disfrutar. Explora nuestras categorías y pregunta por tus productos favoritos.', btn1: 'Explorar catálogo ↗', btn1Action: '#/catalogo', btn2: 'Pedir por WhatsApp', btn2Action: 'https://wa.me/529831121228?text=Hola%20La%20Casita%2C%20quiero%20hacer%20un%20pedido' },
+      { type: 'image', src: 'img/fachada-juegos.png', kicker: 'Zona Gaming', title: 'Ven a jugar con tus amigos.', desc: 'Contamos con Xbox, snacks y bebidas bien frías para que no te falte nada mientras juegas.', btn1: 'Ver Zona Gaming 🎮', btn1Action: '#cas-gaming-gallery', btn2: 'Consultar horarios', btn2Action: 'https://wa.me/529831121228?text=Hola%2C%20quisiera%20saber%20los%20horarios' }
+    ];
+
+    var CATEGORIES = [
+      {id:'abarrotes', name:'Abarrotes', emoji:'🛒'}, {id:'bebidas', name:'Bebidas y Jugos', emoji:'🥤'}, {id:'botanas', name:'Sabritas y Botanas', emoji:'🥔'}, {id:'galletas', name:'Galletas', emoji:'🍪'}, {id:'dulces', name:'Dulces', emoji:'🍬'}, {id:'chocolates',name:'Dulces de Chocolate', emoji:'🍫'}, {id:'sopas', name:'Sopas Instantáneas', emoji:'🍜'}, {id:'energetizantes',name:'Energetizantes', emoji:'⚡'}, {id:'snacks', name:'Snacks Preparados', emoji:'🍟'}, {id:'limpieza', name:'Limpieza', emoji:'🧼'}, {id:'mascotas', name:'Mascotas', emoji:'🐾'}, {id:'gaming', name:'Renta de Videojuegos', emoji:'🎮'}
+    ];
+
+        var PRODUCTS = [
+      /* ---------- 🛒 ABARROTES ---------- */
+      {id:'tortilla', name:'Tortilla (Kilogramo)', price:26, cat:'abarrotes', img:'img/tortilla.jpg'},
+      {id:'aceiteave', name:'Aceite Ave Vegetal 800 ml', price:36, cat:'abarrotes', img:'img/aceite-ave-vegetal-800ml.jpg'},
+      {id:'aceitejusto', name:'Aceite Justo Vegetal 800 ml', price:34, cat:'abarrotes', img:'img/aceite-justo-vegetal-800ml.jpg'},
+      {id:'aceitenut', name:'Aceite Nutrioli 400 ml', price:24, cat:'abarrotes', img:'img/aceite-nutrioli-400ml.jpg'},
+      {id:'azucar1', name:'Azúcar 1 kg', price:28, cat:'abarrotes', img:'img/azucar-1kg.jpg'},
+      {id:'azucarm', name:'Azúcar Merza 450 g', price:15, cat:'abarrotes', img:'img/azucar-merza-450g.jpg'},
+      {id:'bicarb', name:'Bicarbonato', price:3, cat:'abarrotes', img:'img/bicarbonato.jpg'},
+      {id:'cafe', name:'Café en Sobre', price:16, cat:'abarrotes', img:'img/cafe-en-sobre.jpg'},
+      {id:'canela', name:'Canela', price:3, cat:'abarrotes', img:'img/canela.jpg'},
+      {id:'canelam', name:'Canela Molida', price:3, cat:'abarrotes', img:'img/canela-molida.jpg'},
+      {id:'catsup', name:'Catsup 380 g', price:15, cat:'abarrotes', img:'img/catsup-380g.jpg'},
+      {id:'chilem', name:'Chile Molido', price:3, cat:'abarrotes', img:'img/chile-molido.jpg'},
+      {id:'fideos', name:'Fideos', price:14, cat:'abarrotes', img:'img/fideos.jpg'},
+      {id:'frijol', name:'Frijol Sierra Refrito', price:18, cat:'abarrotes', img:'img/frijol-sierra-refrito.jpg'},
+      {id:'frijolm', name:'Frijol Sierra Molido', price:18, cat:'abarrotes', img:'img/frijol-sierra-molido.jpg'},
+      {id:'frijolisa', name:'Frijol Isadora Negro Refrito', price:18, cat:'abarrotes', img:'img/frijol-isadora-negro.jpg'},
+      {id:'frijollata', name:'Frijol Lata Molido', price:18, cat:'abarrotes', img:'img/frijol-lata-molido.jpg'},
+      {id:'garrafon', name:'Garrafón de Agua', price:18, cat:'abarrotes', img:'img/garrafon-de-agua.jpg'},
+      {id:'te_negro', name:'Great Value Té Negro', price:12, cat:'abarrotes', img:'img/great-value-te-negro.jpg'},
+      {id:'arroz', name:'Arroz Great Value', price:23, cat:'abarrotes', img:'img/arroz-great-value.jpg'},
+      {id:'huevo', name:'Huevo (Pieza)', price:3, cat:'abarrotes', img:'img/huevo.jpg'},
+      {id:'knorr', name:'Knorr Suiza (Pieza)', price:23, cat:'abarrotes', img:'img/knorr-suiza.jpg'},
+      {id:'lechefp', name:'Leche Forti Plus', price:25, cat:'abarrotes', img:'img/leche-forti-plus.jpg'},
+      {id:'lechelala', name:'Leche Lala Deslactosada', price:34, cat:'abarrotes', img:'img/leche-lala-deslactosada.jpg'},
+      {id:'mayolim', name:'Mayonesa Limón Mediana', price:35, cat:'abarrotes', img:'img/mayonesa-limon-mediana.jpg'},
+      {id:'mayolimp', name:'Mayonesa Limón Pequeña', price:29, cat:'abarrotes', img:'img/mayonesa-limon-pequena.jpg'},
+      {id:'mayomed', name:'Mayonesa Mediana', price:35, cat:'abarrotes', img:'img/mayonesa-mediana.jpg'},
+      {id:'mayopeq', name:'Mayonesa Pequeña', price:25, cat:'abarrotes', img:'img/mayonesa-pequena.jpg'},
+      {id:'nutrile', name:'Nutri Leche', price:25, cat:'abarrotes', img:'img/nutri-leche.jpg'},
+      {id:'nutriled', name:'Nutri Leche Deslactosada', price:27, cat:'abarrotes', img:'img/nutri-leche-deslactodada.jpg'},
+      {id:'palomitas', name:'Palomitas', price:16, cat:'abarrotes', img:'img/palomitas.jpg'},
+      {id:'papelbano', name:'Papel Baño Completo 4pz', price:20, cat:'abarrotes', img:'img/papel-bano-completo-4pz.jpg'},
+      {id:'spaghet', name:'Pasta Spaghetti', price:27, cat:'abarrotes', img:'img/pasta-spaghetti.jpg'},
+      {id:'pimienta', name:'Pimienta Molida', price:3, cat:'abarrotes', img:'img/pimienta-molida.jpg'},
+      {id:'pure', name:'Puré de Tomate 354 g', price:18, cat:'abarrotes', img:'img/pure-de-tomate-354g.jpg'},
+      {id:'rascadito', name:'Rascadito', price:4, cat:'abarrotes', img:'img/rascadito.jpg'},
+      {id:'rascaditov', name:'Rascadito Verde con Juguetes', price:4, cat:'abarrotes', img:'img/rascadito-verde-con-juguetes.jpg'},
+      {id:'rascaditojug', name:'Rascadito Juguetes', price:3, cat:'abarrotes', img:'img/rascadito-juguetes.jpg'},
+      {id:'cucharas', name:'Cucharas Plástico', price:1, cat:'abarrotes', img:'img/cucharas-plastico.jpg'},
+      {id:'recarga20', name:'Recarga $20', price:22, cat:'abarrotes', img:'img/recarga-20.jpg'},
+      {id:'recarga30', name:'Recarga $30', price:33, cat:'abarrotes', img:'img/recarga-30.jpg'},
+      {id:'recarga50', name:'Recarga $50', price:53, cat:'abarrotes', img:'img/recarga-50.jpg'},
+      {id:'recarga10', name:'Recarga $10', price:12, cat:'abarrotes', img:'img/recarga-10.jpg'},
+      {id:'royal', name:'Royal Polvo para Hornear', price:3, cat:'abarrotes', img:'img/royal.jpg'},
+      {id:'saborin', name:'Saborín', price:5, cat:'abarrotes', img:'img/saborin.jpg'},
+      {id:'pikaflak', name:'Saborines Pika Flakitos Chamoy', price:5, cat:'abarrotes', img:'img/saborines-pika-flakitos-chamoy.jpg'},
+      {id:'salchb', name:'Salchichas Bafar', price:40, cat:'abarrotes', img:'img/salchichas-bafar.jpg'},
+      {id:'salchc', name:'Salchichas Chimex', price:30, cat:'abarrotes', img:'img/salchichas-chimex.jpg'},
+      {id:'soloplato', name:'Solo Plato de Nachos', price:4, cat:'abarrotes', img:'img/solo-plato-de-nachos.jpg'},
+      {id:'tangf', name:'Tang de Fresa', price:10, cat:'abarrotes', img:'img/tang-de-fresa.jpg'},
+      {id:'tangh', name:'Tang de Horchata', price:10, cat:'abarrotes', img:'img/tang-de-horchata.jpg'},
+      {id:'tangm', name:'Tang de Mandarina', price:10, cat:'abarrotes', img:'img/tang-de-mandarina.jpg'},
+      {id:'tangp', name:'Tang de Piña', price:10, cat:'abarrotes', img:'img/tang-de-pina.jpg'},
+      {id:'tangu', name:'Tang de Uva', price:10, cat:'abarrotes', img:'img/tang-de-uva.jpg'},
+      {id:'tangj', name:'Tang Jamaica', price:10, cat:'abarrotes', img:'img/tang-jamaica.jpg'},
+      {id:'tangt', name:'Tang Tamarindo', price:10, cat:'abarrotes', img:'img/tang-tamarindo.jpg'},
+      {id:'tortillin', name:'Tortillinas Tia Rosa', price:39, cat:'abarrotes', img:'img/tortillinas-tia-rosa.jpg'},
+      {id:'tostadas', name:'Tostadas', price:25, cat:'abarrotes', img:'img/tostadas.jpg'},
+      {id:'tostaditas', name:'Tostaditas 260g', price:32, cat:'abarrotes', img:'img/tostaditas-260g.jpg'},
+      {id:'vasos', name:'Vasos Desechables', price:3, cat:'abarrotes', img:'img/vasos-desechables.jpg'},
+      {id:'yoghurt', name:'Yoghurt de Fresa', price:12, cat:'abarrotes', img:'img/yoghurt-de-fresa.jpg'},
+      
+      /* ---------- 🐾 MASCOTAS ---------- */
+      {id:'croquetas_kg', name:'Croquetas (Kilogramo)', price:44, cat:'mascotas', img:'img/croquetas.jpg'},
+      {id:'croquetas', name:'Croquetas Forty Dog', price:34, cat:'mascotas', img:'img/croquetas-forty-dog.jpg'},
+      {id:'fortycat', name:'Forty Cat 700g', price:35, cat:'mascotas', img:'img/forty-cat-700g.jpg'},
+      {id:'whiskas', name:'Whiskas 500g', price:37, cat:'mascotas', img:'img/whiskas-500g.jpg'},
+
+      /* ---------- 🍬 DULCES ---------- */
+      {id:'banderillas', name:'Banderillas', price:5, cat:'dulces', img:'img/banderillas.jpg'},
+      {id:'barquillo', name:'Barquillo Cookis & Cream', price:3, cat:'dulces', img:'img/barquillo-cookis-y-cream.jpg'},
+      {id:'botanitas', name:'Botanitas Maíz', price:1, cat:'dulces', img:'img/botanitas-maiz.jpg'},
+      {id:'bubbaloo', name:'Bubbaloo', price:2, cat:'dulces', img:'img/bubbaloo.jpg'},
+      {id:'chamoy', name:'Chamoy con Chile', price:3, cat:'dulces', img:'img/chamoy-con-chile.jpg'},
+      {id:'chiclescanels', name:'Chicles Canels', price:1.5, cat:'dulces', img:'img/chicles-canels.jpg'},
+      {id:'chiclesbolita', name:'Chicles de Bolita', price:2, cat:'dulces', img:'img/chicles-de-bolita.jpg'},
+      {id:'chiclestatuaje', name:'Chicles Tatuaje', price:2, cat:'dulces', img:'img/chicles-tatuaje.jpg'},
+      {id:'chiclosos', name:'Chiclosos Coronado', price:2, cat:'dulces', img:'img/chiclosos-coronado.jpg'},
+      {id:'chipiletas', name:'Chipiletas', price:5, cat:'dulces', img:'img/chipiletas.jpg'},
+      {id:'cucharamix', name:'Cuchara Mix', price:6, cat:'dulces', img:'img/cuchara-mix.jpg'},
+      {id:'coco', name:'Dulce de Coco Rompemuela', price:5, cat:'dulces', img:'img/dulce-de-coco-rompemuela.jpg'},
+      {id:'frutal', name:'Frutal Soda Polvo Frutas', price:3, cat:'dulces', img:'img/frutal-soda-polvo-acidulado-frutas.jpg'},
+      {id:'frujelly', name:'Frutti Jelly', price:2, cat:'dulces', img:'img/frutti-jelly.jpg'},
+      {id:'frutzuco', name:'Frutzuco Polvo Frutas', price:4, cat:'dulces', img:'img/frutzuco-polvo-frutas.jpg'},
+      {id:'gomitas', name:'Gomitas Ojos Saltones', price:6, cat:'dulces', img:'img/gomitas-ojos-saltones.jpg'},
+      {id:'gomitasskw', name:'Gomitas Skwinkles', price:22, cat:'dulces', img:'img/gomitas-skwinkles.jpg'},
+      {id:'hallsm', name:'Halls Miel y Limón', price:10, cat:'dulces', img:'img/halls-miel-y-limon.jpg'},
+      {id:'hallsn', name:'Halls Negros', price:10, cat:'dulces', img:'img/halls-negros.jpg'},
+      {id:'lucasm', name:'Lucas Muecas', price:12, cat:'dulces', img:'img/lucas-muecas.jpg'},
+      {id:'lucasp', name:'Lucas Panzón Chamoy', price:12, cat:'dulces', img:'img/lucas-panzon-chamoy.jpg'},
+      {id:'lucasgus', name:'Lucas Gusano', price:12, cat:'dulces', img:'img/lucas-gusano.jpg'},
+      {id:'manita', name:'Manita Elástica c/Bolsita', price:6, cat:'dulces', img:'img/manzanita.jpg'},
+      {id:'maxair', name:'Max Air', price:2, cat:'dulces', img:'img/max-air.jpg'},
+      {id:'mazapan', name:'Mazapán', price:5, cat:'dulces', img:'img/mazapan.jpg'},
+      {id:'mentos', name:'Mentos Menta Display', price:10, cat:'dulces', img:'img/mentos-menta-display.jpg'},
+      {id:'obleas', name:'Obleas', price:5, cat:'dulces', img:'img/obleas.jpg'},
+      {id:'orbit', name:'Orbit Chicle', price:3, cat:'dulces', img:'img/orbit-chicle.jpg'},
+      {id:'chiclemetro', name:'Chicle de Metro', price:3, cat:'dulces', img:'img/chicle-metro.jpg'},
+      {id:'pachicleta', name:'Pachicleta Fuego', price:6, cat:'dulces', img:'img/pachicleta-fuego.jpg'},
+      {id:'palanquetas', name:'Palanquetas Mini', price:5, cat:'dulces', img:'img/palanquetas-mini.jpg'},
+      {id:'paletabx', name:'Paleta Bubbalo Xtreme', price:6, cat:'dulces', img:'img/paleta-bubbalo-xtreme.jpg'},
+      {id:'coronado', name:'Paleta Coronado de Cajeta', price:3, cat:'dulces', img:'img/paleta-coronado-de-cajeta.jpg'},
+      {id:'elotechil', name:'Paleta Elote Chilosa', price:6, cat:'dulces', img:'img/paleta-elote-chilosa.jpg'},
+      {id:'lazer', name:'Paleta Lazer Marcianos', price:6, cat:'dulces', img:'img/paleta-lazer-marcianos.jpg'},
+      {id:'mangochil', name:'Paleta Mango Chilosa', price:6, cat:'dulces', img:'img/paleta-mango-chilosa.jpg'},
+      {id:'picafre', name:'Paleta Pica Fresa', price:10, cat:'dulces', img:'img/paleta-pica-fresa.jpg'},
+      {id:'pinachil', name:'Paleta Piña Chilosa', price:6, cat:'dulces', img:'img/paleta-pina-chilosa.jpg'},
+      {id:'sandichil', name:'Paleta Sandía Chilosa', price:6, cat:'dulces', img:'img/paleta-sandia-chilosa.jpg'},
+      {id:'paletak', name:'Paleta Takis', price:12, cat:'dulces', img:'img/paleta-takis.jpg'},
+      {id:'pecositas', name:'Pecositas', price:4, cat:'dulces', img:'img/pecositas.jpg'},
+      {id:'pelon', name:'Pelón Mini', price:4, cat:'dulces', img:'img/pelon-mini.jpg'},
+      {id:'picafresas', name:'Pica Fresas', price:1, cat:'dulces', img:'img/pica-fresas.jpg'},
+      {id:'picalimon', name:'Pica Limón y Chile', price:1, cat:'dulces', img:'img/pica-limon-y-chile.jpg'},
+      {id:'picalimonsal', name:'Pica Limón y Sal', price:1, cat:'dulces', img:'img/pica-limon-y-sal.jpg'},
+      {id:'pikaros', name:'Pikaros', price:6, cat:'dulces', img:'img/pikaros.jpg'},
+      {id:'popotix', name:'Popotix Polvo Frutas', price:2, cat:'dulces', img:'img/popotix-polvo-frutas.jpg'},
+      {id:'ricaletas', name:'Ricaletas', price:5, cat:'dulces', img:'img/ricaletas.jpg'},
+      {id:'rockaleta', name:'Rockaleta', price:8, cat:'dulces', img:'img/rockaleta.jpg'},
+      {id:'skwinkles', name:'Skwinkles', price:11, cat:'dulces', img:'img/skwinkles.jpg'},
+      {id:'sunchos', name:'Sunchos', price:2, cat:'dulces', img:'img/sunchos.jpg'},
+      {id:'tamborines', name:'Tamborines', price:1, cat:'dulces', img:'img/tamborines.jpg'},
+      {id:'truenoc', name:'Trueno Cangrejo', price:7, cat:'dulces', img:'img/trueno-cangrejo.jpg'},
+      {id:'truenoh', name:'Trueno Huevito', price:7, cat:'dulces', img:'img/trueno-huevito.jpg'},
+      {id:'truenop', name:'Trueno Pop', price:3, cat:'dulces', img:'img/trueno-pop.jpg'},
+      {id:'tutsipop', name:'Tutsipop', price:5, cat:'dulces', img:'img/tutsipop.jpg'},
+      {id:'vasito', name:'Vasito Tamarindo', price:10, cat:'dulces', img:'img/vasito-tamarindo.jpg'},
+      {id:'malvaviscos', name:'Malvaviscos de Paquetito', price:5, cat:'dulces', img:'img/malvaviscos-de-paquetito.jpg'},
+      {id:'rifaglobos', name:'Rifa Globos', price:2, cat:'dulces', img:'img/rifa-globos.jpg'},
+
+      /* ---------- 🍫 DULCES DE CHOCOLATE ---------- */
+      {id:'andinietas', name:'Andiinetas Chocolate', price:5, cat:'chocolates', img:'img/andiinetas-chocolate.jpg'},
+      {id:'bocadin', name:'Bocadín', price:3, cat:'chocolates', img:'img/bocadin.jpg'},
+      {id:'bonobon', name:'Bon o Bon Barra', price:10, cat:'chocolates', img:'img/bon-o-bon-barra.jpg'},
+      {id:'bubulubu', name:'Bubu Lubu', price:14, cat:'chocolates', img:'img/bubu-lubu.jpg'},
+      {id:'cremino', name:'Cremino', price:4, cat:'chocolates', img:'img/cremino.jpg'},
+      {id:'kitkat', name:'KitKat', price:20, cat:'chocolates', img:'img/kitkat.jpg'},
+      {id:'mmcac', name:'M&M Cacahuate', price:22, cat:'chocolates', img:'img/m-y-m-cacahuate.jpg'},
+      {id:'mmchoc', name:"M&M's Chocolate", price:22, cat:'chocolates', img:'img/m-y-m-s-chocolate.jpg'},
+      {id:'milky', name:'Milky Way Chocolate', price:22, cat:'chocolates', img:'img/milky-way-chocolate.jpg'},
+      {id:'monedas', name:'Monedas Chocolate', price:2, cat:'chocolates', img:'img/monedas-chocolate.jpg'},
+      {id:'payaso', name:'Paleta Payaso', price:18, cat:'chocolates', img:'img/paleta-payaso.jpg'},
+      {id:'pralina', name:'Pralina Chocolate (Ferrero)', price:9, cat:'chocolates', img:'img/pralina-chocolate-tipo-ferrero.jpg'},
+      {id:'sapito', name:'Sapito Chocolate', price:5, cat:'chocolates', img:'img/sapito-chocolate.jpg'},
+      {id:'snickers', name:'Snickers', price:22, cat:'chocolates', img:'img/snickers.jpg'},
+      {id:'vuala', name:'Vuala Chocolate', price:22, cat:'chocolates', img:'img/vuala-chocolate.jpg'},
+
+      /* ---------- ⚡ ENERGETIZANTES ---------- */
+      {id:'monster', name:'Monster Energy', price:37, cat:'energetizantes', img:'img/monster-energy.jpg'},
+      {id:'monsterlc', name:'Monster Energy Lo-Carb', price:37, cat:'energetizantes', img:'img/monster-energy-lo-carb.jpg'},
+      {id:'monsterup', name:'Monster Ultra Paradise', price:37, cat:'energetizantes', img:'img/monster-energy-ultra-paradise.jpg'},
+      {id:'monsterzu', name:'Monster Zero Ultra', price:37, cat:'energetizantes', img:'img/monster-energy-zero-ultra.jpg'},
+      {id:'monsterj', name:'Monster Juice', price:37, cat:'energetizantes', img:'img/monster-juice.jpg'},
+      {id:'powerrojo', name:'Power Rojo', price:32, cat:'energetizantes', img:'img/power-rojo.jpg'},
+      {id:'powerblue', name:'Powerade Azul', price:34, cat:'energetizantes', img:'img/powerade-azul.jpg'},
+      {id:'voltblue', name:'Volt Azul Bajo', price:22, cat:'energetizantes', img:'img/volt-azul-bajo.jpg'},
+      {id:'voltmora', name:'Volt Blue Mora Azul', price:23, cat:'energetizantes', img:'img/volt-blue-mora-azul.jpg'},
+      {id:'voltdark', name:'Volt Dark', price:22, cat:'energetizantes', img:'img/volt-dark.jpg'},
+      {id:'voltpink', name:'Volt Pink', price:22, cat:'energetizantes', img:'img/volt-pink.jpg'},
+      {id:'voltpinku', name:'Volt Pink Uva', price:22, cat:'energetizantes', img:'img/volt-pink-uva.jpg'},
+      {id:'voltyel', name:'Volt Yellow', price:22, cat:'energetizantes', img:'img/volt-yellow.jpg'},
+
+      /* ---------- 🍪 GALLETAS ---------- */
+      {id:'bizcoch2', name:'Bizcochitos Super', price:22, cat:'galletas', img:'img/bizcochitos-super.jpg'},
+      {id:'bunuelos', name:'Buñuelos', price:15, cat:'galletas', img:'img/bunuelos.jpg'},
+      {id:'chokis', name:'Chokis', price:18, cat:'galletas', img:'img/chokis.jpg'},
+      {id:'cremaxg', name:'Cremax Grandes Chocolate', price:33, cat:'galletas', img:'img/cremax-grandes-chocolate.jpg'},
+      {id:'cremaxgf', name:'Cremax Grandes Fresa', price:33, cat:'galletas', img:'img/cremax-grandes-fresa.jpg'},
+      {id:'cremaxp', name:'Cremax Pequeña', price:11, cat:'galletas', img:'img/cremax-pequena.jpg'},
+      {id:'cremaxv', name:'Cremax Vainilla Grandes', price:33, cat:'galletas', img:'img/cremax-vainilla-grandes.jpg'},
+      {id:'empcomb', name:'Emperador Combinado', price:20, cat:'galletas', img:'img/emperador-combinado.jpg'},
+      {id:'empchoc', name:'Emperador de Chocolate', price:22, cat:'galletas', img:'img/emperador-de-chocolate.jpg'},
+      {id:'empnuez', name:'Emperador Nuez', price:20, cat:'galletas', img:'img/emperador-nuez.jpg'},
+      {id:'emppir', name:'Emperador Piruetas 115g', price:22, cat:'galletas', img:'img/emperador-piruetas-115g.jpg'},
+      {id:'empsenso', name:'Emperador Senso', price:22, cat:'galletas', img:'img/emperador-senso.jpg'},
+      {id:'empvain', name:'Emperador Vainilla', price:20, cat:'galletas', img:'img/emperador-vainilla.jpg'},
+      {id:'florec', name:'Florentinas Sabor Cajeta', price:18, cat:'galletas', img:'img/florentinas-sabor-cajeta.jpg'},
+      {id:'floref', name:'Florentinas Sabor Fresa', price:18, cat:'galletas', img:'img/florentinas-sabor-fresa.jpg'},
+      {id:'animalitos', name:'Galleta Animalitos', price:18, cat:'galletas', img:'img/galleta-animalitos.jpg'},
+      {id:'arcoiris', name:'Galleta Arcoiris', price:20, cat:'galletas', img:'img/galleta-arcoiris.jpg'},
+      {id:'limones', name:'Galleta Limones', price:25, cat:'galletas', img:'img/galleta-limones.jpg'},
+      {id:'oreog', name:'Galleta Oreo Grande', price:22, cat:'galletas', img:'img/galleta-oreo-grande.jpg'},
+      {id:'soda', name:'Galleta Soda', price:24, cat:'galletas', img:'img/galleta-soda.jpg'},
+      {id:'bizcoch', name:'Galletas Bizcochitos', price:22, cat:'galletas', img:'img/galletas-bizcochitos.jpg'},
+      {id:'crackets', name:'Galletas Crackets', price:22, cat:'galletas', img:'img/galletas-crackets.jpg'},
+      {id:'globitos', name:'Galletas Globitos', price:22, cat:'galletas', img:'img/galletas-globitos.jpg'},
+      {id:'marias', name:'Galletas Marías', price:23, cat:'galletas', img:'img/galletas-marias.jpg'},
+      {id:'pancremas', name:'Galletas Pancremas', price:20, cat:'galletas', img:'img/galletas-pancremas.jpg'},
+      {id:'soles', name:'Galletas Soles', price:25, cat:'galletas', img:'img/galletas-soles.jpg'},
+      {id:'sponch', name:'Galletas Sponch', price:26, cat:'galletas', img:'img/galletas-sponch.jpg'},
+      {id:'gansito', name:'Gansito Chocolate', price:22, cat:'galletas', img:'img/gansito-chocolate.jpg'},
+      {id:'giro', name:'Giro Chocolate', price:19, cat:'galletas', img:'img/giro-chocolate.jpg'},
+      {id:'oreocv', name:'Oreo Choco Vainilla', price:22, cat:'galletas', img:'img/oreo-choco-vainilla.jpg'},
+      {id:'oreop', name:'Oreo Pequeña', price:10, cat:'galletas', img:'img/oreo-pequena.jpg'},
+      {id:'oreocaj', name:'Oreo Sabor Cajeta', price:22, cat:'galletas', img:'img/oreo-sabor-cajeta.jpg'},
+      {id:'oreoc', name:'Oreo Sabor Chocolate', price:22, cat:'galletas', img:'img/oreo-sabor-chocolate.jpg'},
+      {id:'oreov', name:'Oreo Sabor Vainilla', price:22, cat:'galletas', img:'img/oreo-sabor-vainilla.jpg'},
+      {id:'panito', name:'Pan Nito Bimbo', price:21, cat:'galletas', img:'img/pan-nito-bimbo.jpg'},
+      {id:'plativos', name:'Plati Volos', price:12, cat:'galletas', img:'img/plati-volos.jpg'},
+      {id:'principes', name:'Príncipes Mediana', price:12, cat:'galletas', img:'img/principes-mediana.jpg'},
+      {id:'ritz', name:'Ritz Sandwich Sabor Queso', price:10, cat:'galletas', img:'img/ritz-sandwich-sabor-queso.jpg'},
+      {id:'troyanasc', name:'Troyanas Chocolate', price:14, cat:'galletas', img:'img/troyanas-chocolate.jpg'},
+      {id:'troyanasco', name:'Troyanas Combinado', price:14, cat:'galletas', img:'img/troyanas-combinado.jpg'},
+      {id:'troyanasn', name:'Troyanas Nuez', price:14, cat:'galletas', img:'img/troyanas-nuez.jpg'},
+      {id:'troyanasv', name:'Troyanas Vainilla', price:14, cat:'galletas', img:'img/troyanas-vainilla.jpg'},
+      {id:'tubopr', name:'Tubo de Príncipe de Chocolate', price:35, cat:'galletas', img:'img/tubo-de-principe-de-chocolate.jpg'},
+      {id:'tubott', name:'Tubo de Triki Trakes', price:35, cat:'galletas', img:'img/tubo-de-triki-trakes.jpg'},
+      {id:'waferc', name:'Wafer Sabor Chocolate', price:5, cat:'galletas', img:'img/wafer-sabor-chocolate.jpg'},
+      {id:'waferf', name:'Wafer Sabor Fresa', price:5, cat:'galletas', img:'img/wafer-sabor-fresa.jpg'},
+      {id:'barritas', name:'Barritas Marinela Grande', price:35, cat:'galletas', img:'img/barritas-marinela.jpg'},
+      {id:'chipsahoy', name:'Chips Ahoy', price:18, cat:'galletas', img:'img/chips-ahoy.jpg'},
+
+      /* ---------- 🍜 SOPAS INSTANTÁNEAS ---------- */
+      {id:'buldakhl', name:'Buldak Habanero Limón', price:50, cat:'sopas', img:'img/buldak-habanero-limon.jpg'},
+      {id:'buldakp', name:'Buldak Picante', price:50, cat:'sopas', img:'img/buldak-picante.jpg'},
+      {id:'buldakc', name:'Buldak Sabor a Carbonara', price:50, cat:'sopas', img:'img/buldak-sabor-a-carbonara-picante.jpg'},
+      {id:'buldakd', name:'Buldak Sabor Doble Picante', price:50, cat:'sopas', img:'img/buldak-sabor-doble-picante.jpg'},
+      {id:'buldakpo', name:'Buldak Sabor Pollo', price:50, cat:'sopas', img:'img/buldak-sabor-pollo.jpg'},
+      {id:'buldakq', name:'Buldak Sabor Queso Picante', price:50, cat:'sopas', img:'img/buldak-sabor-queso-picante.jpg'},
+      {id:'maruchan', name:'Maruchan Camarón Picante', price:14, cat:'sopas', img:'img/maruchan-camaron-picante.jpg'},
+      {id:'maruchan2', name:'Maruchan Camarón, Limón y Habanero', price:14, cat:'sopas', img:'img/maruchan-sabor-camaron-limon-y-habanero.jpg'},
+      {id:'maruchanpollo', name:'Maruchan Pollo', price:14, cat:'sopas', img:'img/maruchan-pollo.jpg'},
+      {id:'maruchanpiquin', name:'Maruchan Chile Piquín', price:18, cat:'sopas', img:'img/maruchan-piquin.jpg'},
+      {id:'maruchanbowl', name:'Maruchan Bowl Camarón Habanero', price:26, cat:'sopas', img:'img/maruchan-bowl.jpg'},
+      {id:'nissincp', name:'Sopa Nissin Camarón Picante', price:17, cat:'sopas', img:'img/sopa-nissin-camaron-picante.jpg'},
+      {id:'nissinc', name:'Sopa Nissin Camarón, Habanero y Limón', price:17, cat:'sopas', img:'img/sopa-nissin-camaron-habanero-y-limon.jpg'},
+      {id:'nissind', name:'Sopa Nissin Diablo', price:17, cat:'sopas', img:'img/sopa-nissin-diablo.jpg'},
+      {id:'nissinhs', name:'Sopa Nissin Hot Sauce con Camarón', price:17, cat:'sopas', img:'img/sopa-nissin-hot-sauce-con-camaron.jpg'},
+      {id:'nissinp', name:'Sopa Nissin Pollo', price:17, cat:'sopas', img:'img/sopa-nissin-pollo.jpg'},
+      {id:'nissinq', name:'Sopa Nissin Queso Jalapeño', price:17, cat:'sopas', img:'img/sopa-nissin-queso-jalapeno.jpg'},
+      {id:'nissinhp', name:'Sopas Nissin Hot Sauce Pollo', price:17, cat:'sopas', img:'img/sopas-nissin-hot-sauce-sabor-pollo.jpg'},
+      {id:'gvsopap', name:'Great Value Sopa Pollo', price:15, cat:'sopas', img:'img/gv-sopa-pollo.jpg'},
+      {id:'gvsopar', name:'Great Value Sopa Res', price:15, cat:'sopas', img:'img/gv-sopa-res.jpg'},
+      {id:'gvsopac', name:'Great Value Sopa Camarón', price:15, cat:'sopas', img:'img/gv-sopa-camaron.jpg'},
+      {id:'gvsopach', name:'Great Value Sopa Camarón Habanero', price:15, cat:'sopas', img:'img/gv-sopa-camaron-hab.jpg'},
+      {id:'gvsopapq', name:'Great Value Sopa Chile Piquín', price:15, cat:'sopas', img:'img/gv-sopa-piquin.jpg'},
+      {id:'sopabp', name:'Sopa Bolsa Pollo', price:12, cat:'sopas', img:'img/sopa-bolsa-pollo.jpg'},
+      {id:'sopabr', name:'Sopa Res Bolsa', price:12, cat:'sopas', img:'img/sopa-bolsa-res.jpg'},
+      {id:'uffoc', name:'Uffo Camarón Fuego', price:26, cat:'sopas', img:'img/uffo-camaron-fuego.jpg'},
+      {id:'uffor', name:'Uffo Res', price:26, cat:'sopas', img:'img/uffo-res.jpg'},
+      {id:'uffok', name:'Uffo Spicy Korean BBQ', price:26, cat:'sopas', img:'img/uffo-spicy-korean-bbq.jpg'},
+
+      /* ---------- 🧼 PRODUCTOS DE LIMPIEZA ---------- */
+      {id:'acido', name:'Ácido Muriático 500 ml', price:15, cat:'limpieza', img:'img/acido-muriatico-500-ml.jpg'},
+      {id:'cloro', name:'Cloro', price:22, cat:'limpieza', img:'img/cloro.jpg'},
+      {id:'foca', name:'Detergente Foca', price:25, cat:'limpieza', img:'img/detergente-foca.jpg'},
+      {id:'focaliq', name:'Detergente Foca Líquido', price:22, cat:'limpieza', img:'img/detergente-foca-liquido.jpg'},
+      {id:'jabonp', name:'Jabón Princesa Azul', price:15, cat:'limpieza', img:'img/jabon-princesa-azul.jpg'},
+      {id:'jabonz', name:'Jabón Zote', price:15, cat:'limpieza', img:'img/jabon-zote.jpg'},
+      {id:'pinol', name:'Pinol 250 ml', price:14, cat:'limpieza', img:'img/pinol-250ml.jpg'},
+      {id:'salvolim', name:'Salvo Limón Jabón', price:16, cat:'limpieza', img:'img/salvo-limon-jabon.jpg'},
+      {id:'suaviy', name:'Suavitel Amarillo', price:24, cat:'limpieza', img:'img/suavitel-amarillo.jpg'},
+      {id:'suavics', name:'Suavitel Cuidado Superior', price:24, cat:'limpieza', img:'img/suavitel-cuidado-superior.jpg'},
+
+      /* ---------- 🥤 BEBIDAS ---------- */
+      {id:'aguabf', name:'Agua Bluebay Sabor Fresa', price:10, cat:'bebidas', img:'img/agua-bluebay-sabor-fresa.jpg'},
+      {id:'aguabm', name:'Agua Bluebay Sabor Mango', price:10, cat:'bebidas', img:'img/agua-bluebay-sabor-mango.jpg'},
+      {id:'agualf', name:'Agua de Litro Bluebay Fresa', price:18, cat:'bebidas', img:'img/agua-de-litro-bluebay-fresa.jpg'},
+      {id:'aguall', name:'Agua de Litro Bluebay Limón', price:18, cat:'bebidas', img:'img/agua-de-litro-bluebay-limon.jpg'},
+      {id:'aguallm', name:'Agua de Litro Bluebay Mango', price:18, cat:'bebidas', img:'img/agua-de-litro-bluebay-mango.jpg'},
+      {id:'aguajam', name:'Agua Jamaica 1L Bluebay', price:16, cat:'bebidas', img:'img/agua-jamaica-1l-bluebay.jpg'},
+      {id:'agualb', name:'Agua Litro Blue Bay', price:16, cat:'bebidas', img:'img/agua-litro-blue-bay.jpg'},
+      {id:'aguamin', name:'Agua Mineral', price:22, cat:'bebidas', img:'img/agua-mineral.jpg'},
+      {id:'capitan', name:'Capitán Chocolate', price:23, cat:'bebidas', img:'img/capitan-chocolate.jpg'},
+      {id:'coca25d', name:'Coca 2.5L Desechable', price:53, cat:'bebidas', img:'img/coca-2-5l-desechable.jpg'},
+      {id:'coca600', name:'Coca 600ml', price:24, cat:'bebidas', img:'img/coca-600ml.jpg'},
+      {id:'coca3', name:'Coca Cola 3L', price:52, cat:'bebidas', img:'img/coca-cola-3l.jpg'},
+      {id:'coca15', name:'Coca-Cola 1.5L', price:30, cat:'bebidas', img:'img/coca-cola-1-5.jpg'},
+      {id:'coca25', name:'Coca-Cola 2.5L', price:40, cat:'bebidas', img:'img/coca-cola-2-5lt.jpg'},
+      {id:'cristal', name:'Cristal Negra', price:23, cat:'bebidas', img:'img/cristal-negra.jpg'},
+      {id:'fanta', name:'Fanta', price:23, cat:'bebidas', img:'img/fanta.jpg'},
+      {id:'fanta25', name:'Fanta 2.5L', price:43, cat:'bebidas', img:'img/fanta-2-5l.jpg'},
+      {id:'fresca', name:'Fresca', price:23, cat:'bebidas', img:'img/fresca.jpg'},
+      {id:'fresca25', name:'Fresca 2.5L', price:43, cat:'bebidas', img:'img/fresca-2-5l.jpg'},
+      {id:'fuze', name:'Fuze Tea', price:24, cat:'bebidas', img:'img/fuze-tea.jpg'},
+      {id:'fuzed', name:'Fuze Tea Durazno', price:22, cat:'bebidas', img:'img/fuze-tea-sabor-durazno.jpg'},
+      {id:'fuzefr', name:'Fuze Tea Frutos Rojos', price:23, cat:'bebidas', img:'img/fuze-tea-sabor-frutos-rojos.jpg'},
+      {id:'icecola', name:'Ice Cola', price:15, cat:'bebidas', img:'img/ice-cola.jpg'},
+      {id:'manzanita', name:'Manzanita', price:22, cat:'bebidas', img:'img/manzanita.jpg'},
+      {id:'mirinda', name:'Mirinda', price:22, cat:'bebidas', img:'img/mirinda.jpg'},
+      {id:'pepsi', name:'Pepsi', price:23, cat:'bebidas', img:'img/pepsi.jpg'},
+      {id:'pepsi25', name:'Pepsi 2.5L Desechable', price:42, cat:'bebidas', img:'img/pepsi-2-5-litros-desechable.jpg'},
+      {id:'rc2', name:'RC Cola 2L', price:30, cat:'bebidas', img:'img/rc-cola-2-l.jpg'},
+      {id:'rc237', name:'RC Cola 237ml', price:7, cat:'bebidas', img:'img/rc-cola-237-ml.jpg'},
+      {id:'rc355', name:'RC Cola 355ml', price:13, cat:'bebidas', img:'img/rc-cola-355-ml.jpg'},
+      {id:'rc600', name:'RC Cola 600ml', price:16, cat:'bebidas', img:'img/rc-cola-600-ml.jpg'},
+      {id:'seven2l', name:'Seven Up 2L', price:32, cat:'bebidas', img:'img/seven-up-2l.jpg'},
+      {id:'sportbl', name:'Sport Bluebay', price:25, cat:'bebidas', img:'img/sport-bluebay.jpg'},
+      {id:'sprite', name:'Sprite', price:23, cat:'bebidas', img:'img/sprite.jpg'},
+      {id:'sprite25', name:'Sprite 2.5L', price:43, cat:'bebidas', img:'img/sprite-2-5l.jpg'},
+      {id:'teblue', name:'Té Helado Bluebay', price:16, cat:'bebidas', img:'img/te-helado-bluebay.jpg'},
+      {id:'boingf', name:'Boing Fresa', price:17, cat:'bebidas', img:'img/boing-fresa.jpg'},
+      {id:'boingg', name:'Boing Guayaba', price:17, cat:'bebidas', img:'img/boing-guayaba.jpg'},
+      {id:'boingmc', name:'Boing Mango Caja', price:18, cat:'bebidas', img:'img/boing-mango-caja.jpg'},
+      {id:'boingmz', name:'Boing Manzana', price:17, cat:'bebidas', img:'img/boing-manzana.jpg'},
+      {id:'boingmzc', name:'Boing Manzana Caja', price:18, cat:'bebidas', img:'img/boing-manzana-caja.jpg'},
+      {id:'frutsi', name:'Frutsi', price:10, cat:'bebidas', img:'img/frutsi.jpg'},
+      {id:'jugobf', name:'Jugo Bida Fresa', price:16, cat:'bebidas', img:'img/jugo-bida-fresa.jpg'},
+      {id:'jugobm', name:'Jugo Bida Mango', price:16, cat:'bebidas', img:'img/jugo-bida-mango.jpg'},
+      {id:'jugobmz', name:'Jugo Bida Manzana', price:16, cat:'bebidas', img:'img/jugo-bida-manzana.jpg'},
+      {id:'jugobmz2', name:'Jugo Bida Manzana 946ml', price:28, cat:'bebidas', img:'img/jugo-bida-manzana-946ml.jpg'},
+      {id:'jugobu', name:'Jugo Bida Uva', price:16, cat:'bebidas', img:'img/jugo-bida-uva.jpg'},
+      {id:'jugobu2', name:'Jugo Bida Uva 946ml', price:28, cat:'bebidas', img:'img/jugo-bida-uva-946ml.jpg'},
+      {id:'jugoso', name:'Jugo de Osos', price:10, cat:'bebidas', img:'img/jugo-de-osos.jpg'},
+      {id:'valle3l', name:'Jugo del Valle Frut 3L', price:47, cat:'bebidas', img:'img/jugo-del-valle-frut-3-litros.jpg'},
+      {id:'jumexm', name:'Jumex Mango', price:17, cat:'bebidas', img:'img/jumex-mango.jpg'},
+      {id:'jumexm2', name:'Jumex Mango 960ml', price:32, cat:'bebidas', img:'img/jumex-mango-960ml.jpg'},
+      {id:'jumexmz', name:'Jumex Manzana', price:17, cat:'bebidas', img:'img/jumex-manzana.jpg'},
+      {id:'jumexmz2', name:'Jumex Manzana 960ml', price:32, cat:'bebidas', img:'img/jumex-manzana-960ml.jpg'},
+      {id:'jumexp', name:'Jumex Piña o Piña Coco 960ml', price:32, cat:'bebidas', img:'img/jumex-pina-o-pina-coco-960ml.jpg'},
+      {id:'midm', name:'Midial3 Manzana 1.5L', price:20, cat:'bebidas', img:'img/midial3-manzana-1-5l.jpg'},
+      {id:'midn', name:'Midial3 Naranja 1.5L', price:20, cat:'bebidas', img:'img/midial3-naranja-1-5l.jpg'},
+      {id:'midp', name:'Midial3 Piña 1.5L', price:20, cat:'bebidas', img:'img/midial3-pina-1-5l.jpg'},
+      {id:'paupau', name:'Pau Pau', price:10, cat:'bebidas', img:'img/pau-pau.jpg'},
+      {id:'bidam', name:'Bida de Mango Lata', price:18, cat:'bebidas', img:'img/bida-de-mango-lata.jpg'},
+      {id:'bidau', name:'Bida de Uva Lata', price:18, cat:'bebidas', img:'img/bida-de-uva-lata.jpg'},
+
+      /* ---------- 🥔 SABRITAS ---------- */
+      {id:'bigmixq', name:'Big Mix Queso', price:15, cat:'botanas', img:'img/big-mix-queso.jpg'},
+      {id:'bigmixv', name:'Big Mix Verde', price:15, cat:'botanas', img:'img/big-mix-verde.jpg'},
+      {id:'bolzazafh', name:'Bolzaza Cheetos Flamin Hot', price:27, cat:'botanas', img:'img/bolzaza-cheetos-flamin-hot.jpg'},
+      {id:'bolzazat', name:'Bolzaza Cheetos Torcidos', price:27, cat:'botanas', img:'img/bolzaza-cheetos-torcidos.jpg'},
+      {id:'bolzazar', name:'Bolzaza Ruffles', price:27, cat:'botanas', img:'img/bolzaza-ruffles.jpg'},
+      {id:'cheetosb', name:'Cheetos Bolita', price:18, cat:'botanas', img:'img/cheetos-bolita.jpg'},
+      {id:'cheetoscol', name:'Cheetos Colmillos', price:16, cat:'botanas', img:'img/cheetos-colmillos.jpg'},
+      {id:'cheetosfh', name:'Cheetos Flamin Hot 55g', price:18, cat:'botanas', img:'img/cheetos-flamin-hot-55g.jpg'},
+      {id:'cheetosg', name:'Cheetos Flamin Hot Grandes', price:38, cat:'botanas', img:'img/cheetos-flamin-hot-grandes.jpg'},
+      {id:'cheetosj', name:'Cheetos Jalapeño', price:18, cat:'botanas', img:'img/cheetos-jalapeno.jpg'},
+      {id:'cheetosn', name:'Cheetos Naranjas', price:12, cat:'botanas', img:'img/cheetos-naranjas.jpg'},
+      {id:'cheetosp', name:'Cheetos Poff', price:18, cat:'botanas', img:'img/cheetos-poff.jpg'},
+      {id:'cheetost', name:'Cheetos Torciditos', price:18, cat:'botanas', img:'img/cheetos-torciditos.jpg'},
+      {id:'cheetosmix', name:'Cheetos Mix', price:10, cat:'botanas', img:'img/cheetos-mix.jpg'},
+      {id:'chicharron', name:'Chicharrón Real de Cerdo', price:35, cat:'botanas', img:'img/chicharron-real-de-cerdo.jpg'},
+      {id:'chipotles', name:'Chipotles', price:18, cat:'botanas', img:'img/chipotles.jpg'},
+      {id:'chipsf', name:'Chips Fuego', price:22, cat:'botanas', img:'img/chips-fuego.jpg'},
+      {id:'chipsj', name:'Chips Jalapeño', price:20, cat:'botanas', img:'img/chips-jalapeno.jpg'},
+      {id:'chipss', name:'Chips Sal', price:15, cat:'botanas', img:'img/chips-sal.jpg'},
+      {id:'chizitos', name:'Chizitos Atrevidos', price:10, cat:'botanas', img:'img/chizitos-atrevidos.jpg'},
+      {id:'churrufh', name:'Churrumais Flamin Hot', price:17, cat:'botanas', img:'img/churrumais-flamin-hot.jpg'},
+      {id:'churrug', name:'Churrumais Grandes', price:17, cat:'botanas', img:'img/churrumais-grandes.jpg'},
+      {id:'crakisa', name:'Crakis Adobadas', price:26, cat:'botanas', img:'img/crakis-adobadas.jpg'},
+      {id:'crakisf', name:'Crakis Fuego', price:27, cat:'botanas', img:'img/crakis-fuego.jpg'},
+      {id:'crakisn', name:'Crakis Nachos', price:26, cat:'botanas', img:'img/crakis-nachos.jpg'},
+      {id:'crakisp', name:'Crakis Papas Naturales', price:26, cat:'botanas', img:'img/crakis-papas-naturales.jpg'},
+      {id:'crakisq', name:'Crakis Quicka Ricos', price:26, cat:'botanas', img:'img/crakis-quicka-ricos.jpg'},
+      {id:'crakisr', name:'Crakis Ruladas', price:27, cat:'botanas', img:'img/crakis-ruladas.jpg'},
+      {id:'crujfh', name:'Crujientes Flamin Hot', price:22, cat:'botanas', img:'img/crujientes-flamin-hot.jpg'},
+      {id:'crujs', name:'Crujientes Salsa Preparada', price:20, cat:'botanas', img:'img/crujientes-sabor-preparadas-con-salsa.jpg'},
+      {id:'cruj', name:'Crujitos', price:19, cat:'botanas', img:'img/crujitos.jpg'},
+      {id:'doritos3d', name:'Doritos 3D Flamin Hot', price:18, cat:'botanas', img:'img/doritos-3d-flamin-hot.jpg'},
+      {id:'doritos54', name:'Doritos 54g', price:17, cat:'botanas', img:'img/doritos-54g.jpg'},
+      {id:'doritosd', name:'Doritos Dinamita', price:20, cat:'botanas', img:'img/doritos-dinamita.jpg'},
+      {id:'doritosdf', name:'Doritos Dinamita Flamin Hot', price:21, cat:'botanas', img:'img/doritos-dinamita-flamin-hot.jpg'},
+      {id:'doritosn', name:'Doritos Nacho', price:22, cat:'botanas', img:'img/doritos-nacho.jpg'},
+      {id:'doritosp', name:'Doritos Pizzerola', price:22, cat:'botanas', img:'img/doritos-pizzerola.jpg'},
+      {id:'doritosx', name:'Doritos Xtra Flamin Hot', price:22, cat:'botanas', img:'img/doritos-xtra-flamin-hot.jpg'},
+      {id:'fritosc', name:'Fritos Chorizo Medianas', price:18, cat:'botanas', img:'img/fritos-chorizo-medianas.jpg'},
+      {id:'fritosfh', name:'Fritos Flamin Hot', price:20, cat:'botanas', img:'img/fritos-flamin-hot.jpg'},
+      {id:'fritoss', name:'Fritos Sal', price:18, cat:'botanas', img:'img/fritos-sal.jpg'},
+      {id:'karamel', name:'Karameladas', price:14, cat:'botanas', img:'img/karameladas.jpg'},
+      {id:'pakazul', name:'Pake Taxo Azul Normal', price:25, cat:'botanas', img:'img/pake-taxo-azul-normal.jpg'},
+      {id:'pakazulg', name:'Paketaxo Azul Grande', price:56, cat:'botanas', img:'img/paketaxo-azul-grande.jpg'},
+      {id:'pakmezg', name:'Paketaxo Mezcladito Grande', price:56, cat:'botanas', img:'img/paketaxo-mezcladito-grande.jpg'},
+      {id:'pakmez', name:'Paketaxo Mezcladito Normal', price:25, cat:'botanas', img:'img/paketaxo-mezcladito-normal.jpg'},
+      {id:'pakfh', name:'Paketaxo Xtra Flamin Hot Normal', price:25, cat:'botanas', img:'img/paketaxo-xtra-flamin-hot-normal.jpg'},
+      {id:'pakfhp', name:'Paketaxo Xtra Flamin Hot Pequeña', price:15, cat:'botanas', img:'img/paketaxo-xtra-flamin-hot-pequena.jpg'},
+      {id:'pakfhg', name:'Paketaxo Xtra Flamin Hot Grande', price:56, cat:'botanas', img:'img/paketaxo-xtraflaminhot-grande.jpg'},
+      {id:'pakdark', name:'Paketaxo Dark', price:15, cat:'botanas', img:'img/paketaxo-dark.jpg'},
+      {id:'papasad', name:'Papas Adobadas', price:17, cat:'botanas', img:'img/papas-adobadas.jpg'},
+      {id:'papasfue', name:'Papas Fuego', price:17, cat:'botanas', img:'img/papas-fuego.jpg'},
+      {id:'papaspic', name:'Papas Picositas Sabritones', price:17, cat:'botanas', img:'img/papas-picositas-sabritones.jpg'},
+      {id:'papasq', name:'Papas Queso', price:17, cat:'botanas', img:'img/papas-queso.jpg'},
+      {id:'sab36', name:'Papas Sabritas 36g', price:20, cat:'botanas', img:'img/papas-sabritas-36g.jpg'},
+      {id:'sabg', name:'Papas Sabritas Grandes', price:22, cat:'botanas', img:'img/papas-sabritas-grandes.jpg'},
+      {id:'popcorn', name:'Popcorners Cheddar', price:14, cat:'botanas', img:'img/popcorners-cheddar.jpg'},
+      {id:'promosab', name:'Promo Sabritas de Salida', price:10, cat:'botanas', img:'img/promo-sabritas-de-salida.jpg'},
+      {id:'rancher', name:'Rancheritos', price:14, cat:'botanas', img:'img/rancheritos.jpg'},
+      {id:'ruffles', name:'Ruffles Mega Crunch', price:22, cat:'botanas', img:'img/ruffles-mega-crunch.jpg'},
+      {id:'rufflesfh', name:'Ruffles Mega Crunch Flamin Hot', price:22, cat:'botanas', img:'img/ruffles-mega-crunch-flamin-hot.jpg'},
+      {id:'rufflesq', name:'Ruffles Queso 48g', price:22, cat:'botanas', img:'img/ruffles-queso-48g.jpg'},
+      {id:'rufflesn', name:'Ruffles Natural Sal', price:22, cat:'botanas', img:'img/ruffles-natural.jpg'},
+      {id:'runners', name:'Runners', price:16, cat:'botanas', img:'img/runners.jpg'},
+      {id:'sabado', name:'Sabritas Adobadas', price:22, cat:'botanas', img:'img/sabritas-adobadas.jpg'},
+      {id:'sabcre', name:'Sabritas Crema y Especias', price:22, cat:'botanas', img:'img/sabritas-crema-y-especias.jpg'},
+      {id:'sabcj', name:'Sabritas Crujiente Jalapeño', price:22, cat:'botanas', img:'img/sabritas-crujiente-jalapeno.jpg'},
+      {id:'sabfh', name:'Sabritas Flamin Hot', price:22, cat:'botanas', img:'img/sabritas-flamin-hot.jpg'},
+      {id:'sabdonitas', name:'Sabritones Donitas', price:15, cat:'botanas', img:'img/sabritones-donitas.jpg'},
+      {id:'saborig', name:'Sabritones Original', price:17, cat:'botanas', img:'img/sabritones-original.jpg'},
+      {id:'sabrejitas', name:'Sabritones Rejitas', price:17, cat:'botanas', img:'img/sabritones-rejitas.jpg'},
+      {id:'takis', name:'Takis Fuego', price:18, cat:'botanas', img:'img/takis-fuego.jpg'},
+      {id:'takisor', name:'Takis Original', price:12, cat:'botanas', img:'img/takis-original.jpg'},
+      {id:'topchili', name:'Top Top Hot Chili', price:15, cat:'botanas', img:'img/top-top-hot-chili.jpg'},
+      {id:'topnachos', name:'Top Top Nachos', price:12, cat:'botanas', img:'img/top-top-nachos.jpg'},
+      {id:'topsalsa', name:'Top Top Salsa Negra', price:15, cat:'botanas', img:'img/top-top-salsa-negra.jpg'},
+      {id:'tostitos', name:'Tostitos 50g', price:22, cat:'botanas', img:'img/tostitos-50g.jpg'},
+      {id:'tostitosfh', name:'Tostitos Flamin Hot', price:22, cat:'botanas', img:'img/tostitos-flamin-hot.jpg'},
+      {id:'totisp', name:'Totis Paps a la Francesa', price:7, cat:'botanas', img:'img/totis-paps-a-la-francesa.jpg'},
+      {id:'totisq', name:'Totis Quetotis Puff', price:7, cat:'botanas', img:'img/totis-quetotis-puff.jpg'},
+      {id:'troddosa', name:'Troddos Atrevidos', price:15, cat:'botanas', img:'img/troddos-atrevidos.jpg'},
+      {id:'troddoss', name:'Troddos Salsa Negra', price:15, cat:'botanas', img:'img/troddos-salsa-negra.jpg'},
+      {id:'chicharron10', name:'Chicharrón 10x10', price:10, cat:'botanas', img:'img/chicharron-10x10.jpg'},
+
+      /* ---------- 🍟 SNACKS PREPARADOS ---------- */
+      {id:'heladog', name:'Helado en Vaso Grande Cookis & Cream', price:17, cat:'snacks', img:'img/helado-en-vaso-grande-cookis-and-cream.jpg'},
+      {id:'heladon', name:'Helado en Vaso Normal Cookis & Cream', price:14, cat:'snacks', img:'img/helado-en-vaso-normal-cookis-and-cream.jpg'},
+      {id:'nachos', name:'Nachos con Queso y Jalapeño 120g', price:25, cat:'snacks', img:'img/nachos-con-queso-y-jalapeno-120g.jpg'},
+      {id:'palomitasprep', name:'Palomitas Preparadas', price:22, cat:'snacks', img:'img/palomitas-preparadas.jpg'},
+      {id:'papasf', name:'Papas a la Francesa', price:30, cat:'snacks', img:'img/papas-a-la-francesa.jpg'},
+      {id:'soloqueso', name:'Solo Queso y Jalapeño', price:15, cat:'snacks', img:'img/solo-queso-y-jalapeno.jpg'},
+      {id:'minipizzas', name:'Mini Pizzas', price:40, cat:'snacks', img:'img/mini-pizzas.jpg'},
+
+      /* ---------- 🎮 RENTA DE VIDEOJUEGOS ---------- */
+      {id:'xboxcontrol', name:'1 Control Xbox', price:50, cat:'gaming', img:'img/1-control-xbox.jpg'},
+      {id:'xbox1h', name:'Xbox 1 Hora', price:25, cat:'gaming', img:'img/xbox-1-hora.jpg'},
+      {id:'xbox30', name:'Xbox 30 Min', price:15, cat:'gaming', img:'img/xbox-30min.jpg'}
+    ];
+
+    var root = document.getElementById('casita-inicio');
+    if(!root) return;
+
+    var grid       = document.getElementById('cas-product-grid');
+    var homeCats   = document.getElementById('cas-home-cats');
+    var filterBar  = document.getElementById('cas-filter-bar');
+    var catTitle   = document.getElementById('cas-cat-title');
+    var carouselTrack = document.getElementById('cas-carousel-track');
+    var carouselDots  = document.getElementById('cas-carousel-dots');
+    var fab        = document.getElementById('cas-cart-fab');
+    var countEl    = document.getElementById('cas-cart-count');
+    var drawer     = document.getElementById('cas-cart');
+    var overlay    = document.getElementById('cas-cart-overlay');
+    var bodyEl     = document.getElementById('cas-cart-body');
+    var totalEl    = document.getElementById('cas-cart-total');
+    var headCount  = document.getElementById('cas-cart-head-count');
+    var checkout   = document.getElementById('cas-checkout');
+    var closeBtn   = document.getElementById('cas-cart-close');
+    var clearBtn   = document.getElementById('cas-cart-clear');
+
+    var cart = {};
+    try { cart = JSON.parse(localStorage.getItem(CART_KEY)) || {}; } catch(e){ cart = {}; }
+
+    function save(){ try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch(e){} }
+    function money(n){ n = Math.round(n * 100) / 100; return '$' + n.toLocaleString('es-MX'); }
+    function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+    function catName(id){ for(var i=0;i<CATEGORIES.length;i++) if(CATEGORIES[i].id===id) return CATEGORIES[i].name; return ''; }
+
+    var currentSlide = 0;
+    var slideInterval;
+
+    function renderCarousel() {
+      if(!carouselTrack || !carouselDots) return;
+      var slidesHTML = ''; var dotsHTML = '';
+      SLIDES.forEach(function(s, i) {
+        var isActive = i === 0 ? 'active' : '';
+        var bgHTML = '<img class="cas-slide-bg" src="' + esc(s.src) + '" alt="" onerror="this.style.display=\'none\'">';
+        slidesHTML += 
+          '<div class="cas-slide ' + isActive + '" data-idx="' + i + '">' + bgHTML + '<div class="cas-slide-overlay"></div>' +
+            '<div class="cas-slide-content">' + (s.kicker ? '<div class="cas-kicker">' + esc(s.kicker) + '</div>' : '') +
+              '<h1>' + esc(s.title) + '</h1><p>' + esc(s.desc) + '</p>' +
+              '<div class="cas-slide-btns">' + (s.btn1 ? '<a href="' + esc(s.btn1Action) + '" class="cas-btn-solid">' + esc(s.btn1) + '</a>' : '') +
+                (s.btn2 ? '<a href="' + esc(s.btn2Action) + '" target="_blank" rel="noopener" class="cas-btn-outline">' + esc(s.btn2) + '</a>' : '') + '</div></div></div>';
+        dotsHTML += '<button type="button" class="cas-dot ' + (i === 0 ? 'active' : '') + '" data-idx="' + i + '" aria-label="Ir al slide ' + (i+1) + '"></button>';
+      });
+      carouselTrack.innerHTML = slidesHTML; carouselDots.innerHTML = dotsHTML;
+      startSlideShow();
+    }
+
+    function goToSlide(idx) {
+      var slides = carouselTrack.querySelectorAll('.cas-slide'); var dots = carouselDots.querySelectorAll('.cas-dot');
+      if(!slides.length) return;
+      slides.forEach(function(s) { s.classList.remove('active'); }); dots.forEach(function(d) { d.classList.remove('active'); });
+      if(slides[idx]) slides[idx].classList.add('active'); if(dots[idx]) dots[idx].classList.add('active');
+      currentSlide = idx;
+    }
+
+    function nextSlide() { var next = currentSlide + 1; if(next >= SLIDES.length) next = 0; goToSlide(next); }
+    function startSlideShow() { clearInterval(slideInterval); if (SLIDES.length > 1) slideInterval = setInterval(nextSlide, 8000); }
+    
+    if(carouselDots) carouselDots.addEventListener('click', function(e) { var dot = e.target.closest('.cas-dot'); if(dot) { goToSlide(parseInt(dot.dataset.idx, 10)); startSlideShow(); } });
+    var heroCarousel = document.getElementById('cas-carousel');
+    if (heroCarousel) { heroCarousel.addEventListener('mouseenter', function() { clearInterval(slideInterval); }); heroCarousel.addEventListener('mouseleave', startSlideShow); }
+
+    function renderHomeCats(){ if(!homeCats) return; homeCats.innerHTML = CATEGORIES.map(function(c){ return '<a class="cas-cat" href="#/catalogo/' + c.id + '"><span class="emoji">' + c.emoji + '</span><strong>' + esc(c.name) + '</strong></a>'; }).join(''); }
+    function renderFilterBar(){ if(!filterBar) return; filterBar.innerHTML = '<button type="button" class="cas-chip active" data-goto="all">📦 Todos</button>' + CATEGORIES.map(function(c){ return '<button type="button" class="cas-chip" data-goto="' + c.id + '">' + c.emoji + ' ' + esc(c.name) + '</button>'; }).join(''); }
+    function setActiveChip(target){ if(!filterBar) return; filterBar.querySelectorAll('.cas-chip').forEach(function(chip){ chip.classList.toggle('active', chip.dataset.goto === target); }); }
+
+    function productCard(p){
+      var img = p.img ? '<img src="' + esc(p.img) + '" alt="' + esc(p.name) + '" loading="lazy" onerror="this.remove()">' : '';
+      return '<article class="cas-product" data-id="' + esc(p.id) + '" data-name="' + esc(p.name) + '" data-price="' + p.price + '">' +
+          '<div class="cas-prod-art">' + img + '</div>' +
+          '<div class="cas-prod-info"><div class="cas-small">' + esc(catName(p.cat)) + '</div><h3>' + esc(p.name) + '</h3>' +
+            '<div class="cas-price">' + money(p.price) + '</div>' +
+            '<button type="button" class="cas-add">Agregar al carrito 🛒</button>' +
+            '<div class="cas-card-qty"><div class="cas-card-qty-group"><button type="button" data-card-act="minus" aria-label="Quitar uno" disabled>−</button><span class="cas-card-count">0</span><button type="button" data-card-act="plus" aria-label="Agregar uno">+</button></div><button type="button" class="cas-card-gocart">Ver carrito →</button></div></div></article>';
+    }
+
+    function renderCatalog(filterCat){
+      if(!grid) return; filterCat = filterCat || 'all';
+      var catsToShow = filterCat === 'all' ? CATEGORIES : CATEGORIES.filter(function(c){ return c.id === filterCat; });
+      var html = '';
+      catsToShow.forEach(function(c){
+        var prods = PRODUCTS.filter(function(p){ return p.cat === c.id; });
+        if(!prods.length) return;
+        html += '<div class="cas-cat-section" id="cat-' + c.id + '" data-cat="' + c.id + '"><h2><span class="cas-cat-emoji">' + c.emoji + '</span>' + esc(c.name) + ' <small>(' + prods.length + ' productos)</small></h2><div class="cas-products">' + prods.map(productCard).join('') + '</div></div>';
+      });
+      if(!html) html = '<div class="cas-no-results"><span>📦</span><p>No hay productos aquí todavía</p></div>';
+      grid.innerHTML = html;
+      if(catTitle){ if(filterCat === 'all') catTitle.textContent = 'Catálogo completo'; else { var c = CATEGORIES.filter(function(x){ return x.id === filterCat; })[0]; catTitle.textContent = c ? c.emoji + ' ' + c.name : 'Catálogo'; } }
+      syncCardQtys();
+    }
+
+    function syncCardQtys(){
+      if(!grid) return;
+      grid.querySelectorAll('.cas-product').forEach(function(card){
+        var id = card.dataset.id; var q = cart[id] ? cart[id].qty : 0;
+        var countSpan = card.querySelector('.cas-card-count'); var minusBtn = card.querySelector('[data-card-act="minus"]');
+        if(countSpan) countSpan.textContent = q; if(minusBtn) minusBtn.disabled = q <= 0;
+      });
+    }
+
+    var views = root.querySelectorAll('.cas-view');
+    function showView(name){ views.forEach(function(v){ v.classList.toggle('active', v.dataset.view === name); }); }
+
+    function handleHash(){
+      var hash = location.hash.replace(/^#\/?/, '');
+      var targetElement = document.getElementById(hash);
+      if (targetElement) { setTimeout(function() { targetElement.scrollIntoView({behavior:'smooth', block:'start'}); }, 50); return; }
+      var parts = hash.split('/'); var view = parts[0] || 'inicio'; var cat = parts[1] || 'all';
+      if(view === 'catalogo'){ showView('catalogo'); renderCatalog(cat); setActiveChip(cat); window.scrollTo({top:0, behavior:'smooth'}); } 
+      else { showView('inicio'); window.scrollTo({top:0, behavior:'smooth'}); }
+    }
+    window.addEventListener('hashchange', handleHash);
+
+    if(filterBar){
+      filterBar.addEventListener('click', function(e){
+        var chip = e.target.closest('.cas-chip'); if(!chip) return;
+        var target = chip.dataset.goto; var newHash = '#/catalogo' + (target === 'all' ? '' : '/' + target);
+        if(location.hash === newHash){ renderCatalog(target); setActiveChip(target); window.scrollTo({top:0, behavior:'smooth'}); } 
+        else { location.hash = newHash; }
+      });
+    }
+
+    root.querySelectorAll('[data-scroll-to]').forEach(function(a){
+      a.addEventListener('click', function(e){ e.preventDefault(); var el = document.getElementById(a.dataset.scrollTo); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); });
+    });
+
+    function totals(){ var qty = 0, sum = 0; for(var id in cart){ qty += cart[id].qty; sum += cart[id].qty * cart[id].price; } return { qty: qty, sum: sum }; }
+    function buildMessage(){
+      var lines = ['Hola La Casita 👋 Quiero hacer este pedido:'];
+      for(var id in cart){ var it = cart[id]; lines.push('• ' + it.qty + 'x ' + it.name + ' — ' + money(it.qty * it.price)); }
+      lines.push(''); lines.push('Total: ' + money(totals().sum)); lines.push('¿Me confirman disponibilidad? 🙌'); return lines.join('\n');
+    }
+
+    function renderCart(){
+      var t = totals(); countEl.textContent = t.qty; countEl.classList.toggle('hide', t.qty === 0); headCount.textContent = t.qty ? '(' + t.qty + ')' : ''; totalEl.textContent = money(t.sum);
+      var ids = Object.keys(cart);
+      if(!ids.length){ bodyEl.innerHTML = '<div class="cas-cart-empty"><span>🛒</span><p>Tu carrito está vacío</p><small>Agrega productos desde el catálogo.</small></div>'; } 
+      else {
+        bodyEl.innerHTML = ids.map(function(id){
+          var it = cart[id]; var thumb = '<div class="cas-cart-thumb">' + (it.img ? '<img src="' + esc(it.img) + '" alt="" onerror="this.remove()">' : '') + '</div>';
+          return '<div class="cas-cart-item" data-id="' + esc(id) + '">' + thumb +
+              '<div class="cas-cart-info"><strong>' + esc(it.name) + '</strong><span class="cas-cart-unit">' + money(it.price) + ' c/u</span>' +
+                '<div class="cas-qty"><button type="button" data-act="minus">−</button><span>' + it.qty + '</span><button type="button" data-act="plus">+</button></div></div>' +
+              '<div class="cas-cart-right"><span class="cas-line-total">' + money(it.qty * it.price) + '</span><button type="button" class="cas-remove" data-act="remove">🗑</button></div></div>';
+        }).join('');
+      }
+      if(t.qty){ checkout.classList.remove('is-off'); checkout.href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(buildMessage()); } 
+      else { checkout.classList.add('is-off'); checkout.href = '#'; }
+      save(); syncCardQtys();
+    }
+
+    function openCart(){ drawer.classList.add('open'); overlay.classList.add('open'); drawer.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; }
+    function closeCart(){ drawer.classList.remove('open'); overlay.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
+
+    var toastEl = null, toastTimer = null;
+    function toast(msg){ if(!toastEl){ toastEl = document.createElement('div'); toastEl.className = 'cas-toast'; root.appendChild(toastEl); } toastEl.textContent = msg; toastEl.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 2500); }
+
+    function addProductToCart(card, qty){
+      var id = card.dataset.id;
+      if(cart[id]){ cart[id].qty += qty; } 
+      else { var imgEl = card.querySelector('.cas-prod-art img'); cart[id] = { name: card.dataset.name, price: parseFloat(card.dataset.price) || 0, img: imgEl ? imgEl.src : '', qty: qty }; }
+      renderCart();
+    }
+
+    if(grid){
+      grid.addEventListener('click', function(e){
+        var addBtn = e.target.closest('.cas-add');
+        if(addBtn){ var card = addBtn.closest('.cas-product'); if(!card) return; addProductToCart(card, 1); toast('✓ Agregado'); addBtn.classList.add('is-added'); addBtn.textContent = '✓ Agregado'; setTimeout(function(){ addBtn.classList.remove('is-added'); addBtn.textContent = 'Agregar al carrito 🛒'; }, 900); return; }
+        var qtyBtn = e.target.closest('[data-card-act]');
+        if(qtyBtn){ var c2 = qtyBtn.closest('.cas-product'); var id = c2.dataset.id; var act = qtyBtn.dataset.cardAct; if(act === 'plus'){ if(cart[id]) cart[id].qty++; else addProductToCart(c2, 1); renderCart(); } else if(act === 'minus' && cart[id]){ cart[id].qty--; if(cart[id].qty <= 0) delete cart[id]; renderCart(); } return; }
+        var goBtn = e.target.closest('.cas-card-gocart'); if(goBtn){ openCart(); return; }
+      });
+    }
+
+    bodyEl.addEventListener('click', function(e){
+      var btn = e.target.closest('[data-act]'); if(!btn) return; var row = btn.closest('.cas-cart-item'); var id = row.dataset.id; var act = btn.dataset.act; if(!cart[id]) return;
+      if(act === 'plus') cart[id].qty++; else if(act === 'minus'){ cart[id].qty--; if(cart[id].qty <= 0) delete cart[id]; } else if(act === 'remove') delete cart[id];
+      renderCart();
+    });
+
+    fab.addEventListener('click', openCart); closeBtn.addEventListener('click', closeCart); overlay.addEventListener('click', closeCart);
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && drawer.classList.contains('open')) closeCart(); });
+    clearBtn.addEventListener('click', function(){ if(!Object.keys(cart).length) return; if(confirm('¿Vaciar el carrito?')){ cart = {}; renderCart(); toast('Carrito vaciado'); } });
+
+    checkout.addEventListener('click', function(e) {
+      if (Object.keys(cart).length === 0) return;
+      setTimeout(function() { cart = {}; renderCart(); closeCart(); toast('✓ Pedido enviado. ¡Gracias!'); }, 500);
+    });
+
+    var form  = document.getElementById('cas-search-form'); var input = document.getElementById('cas-search-input');
+    if(form && input && grid){
+      form.addEventListener('submit', function(e){
+        e.preventDefault(); var q = input.value.trim().toLocaleLowerCase('es'); var oldNR = grid.querySelector('.cas-no-results'); if(oldNR) oldNR.remove(); var anyGlobal = false;
+        grid.querySelectorAll('.cas-cat-section').forEach(function(sec){
+          var anyVisible = false; sec.querySelectorAll('.cas-product').forEach(function(card){ var name = (card.innerText + ' ' + (card.getAttribute('data-name') || '')).toLocaleLowerCase('es'); var match = !q || name.indexOf(q) !== -1; card.style.display = match ? '' : 'none'; if(match) anyVisible = true; });
+          sec.style.display = anyVisible ? '' : 'none'; if(anyVisible) anyGlobal = true;
+        });
+        if(q && !anyGlobal){ var nr = document.createElement('div'); nr.className = 'cas-no-results'; nr.innerHTML = '<span>🔍</span><p>Sin resultados para "' + esc(q) + '"</p>'; grid.appendChild(nr); }
+        window.scrollTo({top:0, behavior:'smooth'});
+      });
+    }
+
+    /* ---------------- Arranque ---------------- */
+    renderCarousel(); renderHomeCats(); renderFilterBar(); renderCart(); handleHash();
+  })();
+  </script>
+</body>
+</html>
