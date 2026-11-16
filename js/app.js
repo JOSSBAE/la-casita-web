@@ -51,8 +51,11 @@
       var isActive = i === 0 ? 'active' : '';
       var bgHTML = '';
       if (s.type === 'image') {
-        bgHTML = '<img class="cas-slide-bg" src="' + esc(s.src) + '" alt="" onerror="this.style.display=\'none\'">';
-      } else if (s.type === 'video') {
+        // Versión ligera (-800) para celular; la primera carga con prioridad
+        bgHTML = '<img class="cas-slide-bg" src="' + esc(s.src) + '"' +
+          ' srcset="' + esc(s.src.replace('.webp', '-800.webp')) + ' 800w, ' + esc(s.src) + ' 1600w" sizes="100vw"' +
+          (i === 0 ? ' fetchpriority="high"' : ' loading="lazy"') +
+          ' alt="" onerror="this.style.display=\'none\'">';      } else if (s.type === 'video') {
         bgHTML = '<video class="cas-slide-bg" src="' + esc(s.src) + '" autoplay muted loop playsinline></video>';
       }
       slidesHTML += 
@@ -208,6 +211,18 @@
   function showView(name){
     views.forEach(function(v){ v.classList.toggle('active', v.dataset.view === name); });
   }
+  
+  /* Lleva a una sección del inicio (Gaming, Contacto) aunque estés en el catálogo */
+  function goToSection(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    var view = el.closest('.cas-view');
+    if(view && !view.classList.contains('active')){
+      showView(view.dataset.view);
+      history.replaceState(null, '', '#/' + view.dataset.view);
+    }
+    setTimeout(function(){ el.scrollIntoView({behavior:'smooth', block:'start'}); }, 50);
+  }
 
   var pendingFilter = null;
   var suppressHashClear = false;
@@ -215,9 +230,8 @@
   function handleHash(){
     var hash = location.hash.replace(/^#\/?/, '');
     
-    var targetElement = document.getElementById(hash);
-    if (targetElement) {
-      setTimeout(function() { targetElement.scrollIntoView({behavior:'smooth', block:'start'}); }, 50);
+        if (document.getElementById(hash)) {
+      goToSection(hash);
       return;
     }
 
@@ -269,8 +283,7 @@
   root.querySelectorAll('[data-scroll-to]').forEach(function(a){
     a.addEventListener('click', function(e){
       e.preventDefault();
-      var el = document.getElementById(a.dataset.scrollTo);
-      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+            goToSection(a.dataset.scrollTo);
     });
   });
 
@@ -347,12 +360,14 @@
     drawer.classList.add('open');
     overlay.classList.add('open');
     drawer.setAttribute('aria-hidden','false');
+    drawer.inert = false;
     document.body.style.overflow = 'hidden';
   }
   function closeCart(){
     drawer.classList.remove('open');
     overlay.classList.remove('open');
     drawer.setAttribute('aria-hidden','true');
+    drawer.inert = true;
     document.body.style.overflow = '';
   }
 
