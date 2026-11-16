@@ -254,3 +254,9 @@
   #casita-inicio .cas-visit-item > span { width: 26px; text-align: center; color: #ff4eaa; font-size: 20px; padding-top: 2px; }
   #casita-inicio .cas-visit-item .fa-whatsapp { color: #25d366; }
   #casita-inicio .cas-visit-item .fa-facebook { color: #1877f2; }
+
+    /* Botón que se cambia por el mapa de Google al llegar a él */
+  #casita-inicio .cas-map-facade { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: #171020; color: #fff; cursor: pointer; font-family: inherit; font-size: 16px; }
+  #casita-inicio .cas-map-facade span { font-size: 34px; }
+  #casita-inicio .cas-map-facade small { color: #bda9ca; font-size: 13px; }
+  #casita-inicio .cas-map-facade:hover { border-color: #a52cff; }

@@ -101,7 +101,8 @@
     fetchpriority="high">
 
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/chatbot.css">
+    <link rel="preload" href="css/chatbot.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="css/chatbot.css"></noscript>
 </head>
 
 <body style="margin:0;background:#100b16;">
@@ -171,7 +172,7 @@
           <!-- Imagen 1 -->
           <div class="gal-item">
             <!-- Ruta corregida para GitHub Pages -->
-            <img loading="lazy" decoding="async" src="img/maquinita-1.webp" alt="Maquinita 1"
+            <img loading="lazy" decoding="async" src="img/maquinita-1-800.webp" alt="Maquinita 1"
               onerror="this.src='https://via.placeholder.com/400x300/1b1225/ff4eaa?text=Sube+tu+foto+a+la+carpeta+img'">
             <div class="gal-overlay">
               <h3>Zona Xbox</h3>
@@ -181,7 +182,7 @@
 
           <!-- Imagen 2 -->
           <div class="gal-item">
-            <img loading="lazy" decoding="async" src="img/maquinita-2.webp" alt="Maquinita 2"
+            <img loading="lazy" decoding="async" src="img/maquinita-2-800.webp" alt="Maquinita 2"
               onerror="this.src='https://via.placeholder.com/400x300/1b1225/ff4eaa?text=Sube+tu+foto+a+la+carpeta+img'">
             <div class="gal-overlay">
               <h3>Ambiente Gamer</h3>
@@ -191,7 +192,7 @@
 
           <!-- Imagen 3 -->
           <div class="gal-item">
-            <img loading="lazy" decoding="async" src="img/maquinita-3.webp" alt="Maquinita 3"
+            <img loading="lazy" decoding="async" src="img/maquinita-3-800.webp" alt="Maquinita 3"
               onerror="this.src='https://via.placeholder.com/400x300/1b1225/ff4eaa?text=Sube+tu+foto+a+la+carpeta+img'">
             <div class="gal-overlay">
               <h3>¡A Jugar!</h3>
@@ -261,9 +262,10 @@
                 href="https://www.google.com/maps/search/?api=1&amp;query=MiniAbarrotes+La+Casita+Calle+Aruba+Bicentenario+Chetumal"
                 target="_blank" rel="noopener">Cómo llegar en Google Maps ↗</a>
             </div>
-            <iframe class="cas-visit-map" title="Mapa de ubicación de La Casita en Chetumal"
-              src="https://www.google.com/maps?q=MiniAbarrotes+La+Casita,+Calle+Aruba,+Bicentenario,+77086+Chetumal,+Q.R.&amp;output=embed"
-              loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+            <!-- Mapa: se carga hasta que la persona baja a esta parte (ahorra ~400 KB al abrir la página) -->
+            <button type="button" class="cas-visit-map cas-map-facade" id="cas-map-facade" aria-label="Cargar mapa de ubicación">
+              <span>📍</span><strong>Ver mapa</strong><small>Toca para cargar Google Maps</small>
+            </button>
           </div>
         </section>
 

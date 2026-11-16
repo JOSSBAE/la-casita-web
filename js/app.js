@@ -737,6 +737,28 @@
     });
   }
 
+  /* ---------------- Mapa de Google (se carga solo cuando hace falta) ---------------- */
+  var mapFacade = document.getElementById('cas-map-facade');
+  if(mapFacade){
+    var loadMap = function(){
+      if(!mapFacade.parentNode) return;
+      var f = document.createElement('iframe');
+      f.className = 'cas-visit-map';
+      f.title = 'Mapa de ubicación de La Casita en Chetumal';
+      f.src = 'https://www.google.com/maps?q=MiniAbarrotes+La+Casita,+Calle+Aruba,+Bicentenario,+77086+Chetumal,+Q.R.&output=embed';
+      f.referrerPolicy = 'no-referrer-when-downgrade';
+      f.allowFullscreen = true;
+      mapFacade.replaceWith(f);
+    };
+    mapFacade.addEventListener('click', loadMap);
+    if('IntersectionObserver' in window){
+      var mapObs = new IntersectionObserver(function(entries){
+        if(entries[0].isIntersecting){ mapObs.disconnect(); loadMap(); }
+      });
+      mapObs.observe(mapFacade);
+    }
+  }
+
   /* ---------------- Arranque ---------------- */
   renderCarousel();
   renderHomeCats();
