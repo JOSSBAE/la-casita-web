@@ -64,7 +64,7 @@
           '<div class="cas-slide-overlay"></div>' +
           '<div class="cas-slide-content">' +
             (s.kicker ? '<div class="cas-kicker">' + esc(s.kicker) + '</div>' : '') +
-            '<h1>' + esc(s.title) + '</h1>' +
+                        (i === 0 ? '<h1>' : '<h2>') + esc(s.title) + (i === 0 ? '</h1>' : '</h2>') +
             '<p>' + esc(s.desc) + '</p>' +
             '<div class="cas-slide-btns">' +
               (s.btn1 ? '<a href="' + esc(s.btn1Action) + '" class="cas-btn-solid">' + esc(s.btn1) + '</a>' : '') +
